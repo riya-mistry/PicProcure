@@ -21,9 +21,10 @@ def demoupload(request):
         actual_file = os.path.join(fs.base_location,filename)
         blob_service_client = BlobServiceClient.from_connection_string(conn_str)
         container_name = "folder1"
-    
-        #container_client = blob_service_client.create_container(container_name)
-            
+        try:
+            container_client = blob_service_client.create_container(container_name)
+        except Exception :
+            pass
         blob_client = blob_service_client.get_blob_client(container=container_name, blob=myfile.name)   
         with open(actual_file, "rb") as data:
             blob_client.upload_blob(data)
