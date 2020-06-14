@@ -13,23 +13,26 @@ Account_name="demoblobstorage101"
 def index(request):
     return render(request,'uploadFiles/index.html')
 def demoupload(request):
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        
-        actual_file = os.path.join(fs.base_location,filename)
-        blob_service_client = BlobServiceClient.from_connection_string(conn_str)
-        container_name = "folder1"
-        try:
-            container_client = blob_service_client.create_container(container_name)
-        except Exception :
-            pass
-        blob_client = blob_service_client.get_blob_client(container=container_name, blob=myfile.name)   
-        with open(actual_file, "rb") as data:
-            blob_client.upload_blob(data)
-        fs.delete(filename)
-        uploaded_file_url = fs.url(filename)
+    if request.method == 'POST' and request.FILES.getlist('myfile'):
+        myfile12 = request.FILES.getlist('myfile')
+        print (myfile12)
+        for myfile in myfile12:
+            print (myfile)
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            
+            actual_file = os.path.join(fs.base_location,filename)
+            blob_service_client = BlobServiceClient.from_connection_string(conn_str)
+            container_name = "folder1"
+            try:
+                container_client = blob_service_client.create_container(container_name)
+            except Exception :
+                pass
+            blob_client = blob_service_client.get_blob_client(container=container_name, blob=myfile.name)   
+            with open(actual_file, "rb") as data:
+                blob_client.upload_blob(data)
+            fs.delete(filename)
+            uploaded_file_url = fs.url(filename)
         return render(request, 'uploadFiles/demoupload.html', {
             'uploaded_file_url': uploaded_file_url
         })
