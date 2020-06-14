@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import os, uuid
 from django.core.files.storage import FileSystemStorage
@@ -36,9 +36,9 @@ def demoupload(request):
     return render(request, 'uploadFiles/demoupload.html')
 def uploaded(request):
     if request.method == "POST":
-        s = request.FILES['file123']
-        print(s)        
-    return HttpResponse("helo world" +str(s))
+        blob_name = request.POST.get('image_name','')
+        deleteFile(blob_name)    
+    return  redirect(viewFiles)
 def viewFiles(request):
     blob_service_client = BlobServiceClient.from_connection_string(conn_str)
     container_name = "folder1"
@@ -62,3 +62,18 @@ def get_img_url_with_blob_sas_token(blob_name):
     )
     blob_url_with_blob_sas_token = f"https://demoblobstorage101.blob.core.windows.net/folder1/"+blob_name+"?"+blob_sas_token
     return blob_url_with_blob_sas_token
+
+def deleteFile(blob_name):
+    blob_service_client = BlobServiceClient.from_connection_string(conn_str)
+    container_name = "folder1"
+    container_client  = blob_service_client.get_container_client(container_name)
+    container_client.delete_blob(blob_name)
+def deleteContainer(container_name):
+    blob_service_client = BlobServiceClient.from_connection_string(conn_str)
+    blob_service_client.delete_container(container_name)
+def getContainerDeletePage(request):
+    if request.method == "POST":
+        deleteContainer(request.POST.get('container_name',''))
+        return redirect(viewFiles)
+    else:
+        return render(request,'uploadFiles/deleteContainer.html')

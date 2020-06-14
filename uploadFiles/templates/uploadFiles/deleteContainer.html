@@ -1,0 +1,5 @@
+enter name of container to be deleted
+<form method="POST" action="/uploadFiles/delete-container">{% csrf_token %}
+    <input type='text' name='container_name'>
+    <input type="submit" value="delete">
+</form>

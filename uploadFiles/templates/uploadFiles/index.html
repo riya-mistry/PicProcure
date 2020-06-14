@@ -1,6 +1,6 @@
-<a href = '/uploadFiles/uploaded'>click</a>
+Enter the name of file to be deleted!!!
 <form action='/uploadFiles/uploaded' method="POST" enctype="multipart/form-data">{% csrf_token %}
-    <input type="file" name="file123" id="file123">
+    <input type="text" name="image_name" id="image_name">
     
     <input type="submit">
 </form>
