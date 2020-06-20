@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'uploadFiles.apps.UploadfilesConfig',
+    'users.apps.UsersConfig',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +78,12 @@ WSGI_APPLICATION = 'PicProcure.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'PicProcure',
+        'USER':'root',
+        'PASSWORD':'',
+        'HOST': 'localhost',
+        'PORT':'3306',
     }
 }
 
@@ -119,12 +125,12 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-"""DEFAULT_FILE_STORAGE = 'backend.custom_azure.AzureMediaStorage'
-STATICFILES_STORAGE = 'backend.custom_azure.AzureStaticStorage'
+DEFAULT_FILE_STORAGE = 'PicProcure.custom_azure.AzureMediaStorage'
+STATICFILES_STORAGE = 'PicProcure.custom_azure.AzureStaticStorage'
 STATIC_LOCATION = "static"
-MEDIA_LOCATION = "folder1234"
+MEDIA_LOCATION = "media"
 
 AZURE_ACCOUNT_NAME = "demoblobstorage101"
 AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
 STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
-MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'"""
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'

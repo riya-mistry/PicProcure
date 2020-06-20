@@ -23,9 +23,9 @@ def demoupload(request):
             
             actual_file = os.path.join(fs.base_location,filename)
             blob_service_client = BlobServiceClient.from_connection_string(conn_str)
-            container_name = "folder1"
+            container_name = "riya"
             try:
-                container_client = blob_service_client.create_container(container_name)
+                container_client = blob_service_client.create_container(container_name,public_access='blob')
             except Exception :
                 pass
             blob_client = blob_service_client.get_blob_client(container=container_name, blob=myfile.name)   
@@ -44,7 +44,7 @@ def uploaded(request):
     return  redirect(viewFiles)
 def viewFiles(request):
     blob_service_client = BlobServiceClient.from_connection_string(conn_str)
-    container_name = "folder1"
+    container_name = "riya"
     container_client  = blob_service_client.get_container_client(container_name)
     blob_list = container_client.list_blobs()
     urls = []
@@ -55,15 +55,15 @@ def viewFiles(request):
     return render (request,'uploadFiles/viewFiles.html',context = context)
 
 def get_img_url_with_blob_sas_token(blob_name):
-    blob_sas_token = generate_blob_sas(
+    """blob_sas_token = generate_blob_sas(
         account_name='demoblobstorage101',
         container_name='folder1',
         blob_name=blob_name,
         account_key="rnT6wujj8Pmh6P1HjtH6p3KfRr6deJcWLwgFgoIpGKYzSk+EOHt+bfIE4ixtIB40yfhc10aLAKKYy91h1xS+4A==",
         permission=ContainerSasPermissions(read=True),
-        expiry=datetime.utcnow() + timedelta(hours=1)
-    )
-    blob_url_with_blob_sas_token = f"https://demoblobstorage101.blob.core.windows.net/folder1/"+blob_name+"?"+blob_sas_token
+        expiry=datetime.utcnow() + timedelta(hours=1)"""
+    
+    blob_url_with_blob_sas_token = f"https://demoblobstorage101.blob.core.windows.net/riya/"+blob_name
     return blob_url_with_blob_sas_token
 
 def deleteFile(blob_name):
@@ -77,6 +77,6 @@ def deleteContainer(container_name):
 def getContainerDeletePage(request):
     if request.method == "POST":
         deleteContainer(request.POST.get('container_name',''))
-        return redirect(viewFiles)
+        return redirect(demoupload)
     else:
         return render(request,'uploadFiles/deleteContainer.html')
