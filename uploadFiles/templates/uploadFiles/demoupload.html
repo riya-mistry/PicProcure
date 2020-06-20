@@ -1,6 +1,5 @@
 
-
-{% load static %}
+{% extends "./base.html" %}
 
 {% block content %}
   <form method="post" enctype="multipart/form-data">
@@ -13,4 +12,4 @@
     <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
   {% endif %}
 <a href="/uploadFiles/viewfiles">view all files</a>
-{% endblock %}
+{% endblock content %}

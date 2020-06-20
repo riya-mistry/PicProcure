@@ -10,6 +10,8 @@ conn_str = "DefaultEndpointsProtocol=https;AccountName=demoblobstorage101;Accoun
 Account_name="demoblobstorage101"
 
 # Create your views here.
+def home(request):
+    return render(request,'uploadFiles/base.html')
 def index(request):
     return render(request,'uploadFiles/index.html')
 def demoupload(request):
