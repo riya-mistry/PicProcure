@@ -5,6 +5,7 @@ urlpatterns = [
     path('viewfiles',views.viewFiles),
     path('uploaded',views.uploaded,name="uploaded"),
     path('demo',views.demoupload),
-    path('',views.index,name='index'),
+    path('base',views.home,name='base'),
+    path('',views.home,name='base'),
     
 ]
