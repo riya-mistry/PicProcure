@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'uploadFiles.apps.UploadfilesConfig',
-    'bootstrap4',
+    'users.apps.UsersConfig',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -77,8 +78,12 @@ WSGI_APPLICATION = 'PicProcure.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'PicProcure',
+        'USER':'root',
+        'PASSWORD':'',
+        'HOST': 'localhost',
+        'PORT':'3306',
     }
 }
 
@@ -114,22 +119,23 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
+#MEDIA_URL = '/media/'
+#STATIC_URL = '/static/'
 # this is the static files folder name which you created in django project root folder. This is different from above STATIC_URL. 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'statics'),
 ]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-"""DEFAULT_FILE_STORAGE = 'backend.custom_azure.AzureMediaStorage'
-STATICFILES_STORAGE = 'backend.custom_azure.AzureStaticStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+STATICFILES_STORAGE = 'PicProcure.custom_azure.AzureMediaStorage'
 STATIC_LOCATION = "static"
-MEDIA_LOCATION = "folder1234"
+
 
 AZURE_ACCOUNT_NAME = "demoblobstorage101"
 AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+MEDIA_LOCATION = "media"
 STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
-MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'"""
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
+
+MEDIA_ROOT='http://{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
