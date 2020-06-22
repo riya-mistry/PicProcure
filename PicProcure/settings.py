@@ -132,7 +132,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 #STATIC_LOCATION = "static"
 
 
-AZURE_ACCOUNT_NAME = "demoblobstorage101"
+AZURE_ACCOUNT_NAME = "picprocurestorageaccount"
 AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
 MEDIA_LOCATION = "media"
 STATIC_URL = '/static/'

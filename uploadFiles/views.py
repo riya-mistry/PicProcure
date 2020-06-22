@@ -1,14 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-import os, uuid
-from django.core.files.storage import FileSystemStorage
 from PicProcure.custom_azure import AzureMediaStorage
 #from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 #from azure.storage.blob import generate_blob_sas, BlobSasPermissions
 #from azure.storage.blob import generate_container_sas, ContainerSasPermissions
 from datetime import datetime, timedelta
-conn_str = "DefaultEndpointsProtocol=https;AccountName=demoblobstorage101;AccountKey=rnT6wujj8Pmh6P1HjtH6p3KfRr6deJcWLwgFgoIpGKYzSk+EOHt+bfIE4ixtIB40yfhc10aLAKKYy91h1xS+4A==;EndpointSuffix=core.windows.net"
-Account_name="demoblobstorage101"
+conn_str = "DefaultEndpointsProtocol=https;AccountName=picprocurestorageaccount;AccountKey=febaaAtjhuePtOvpT5wI8o0OW8r16vu0NLy88/WUASiF02xFqZ7AL6lPeiXin11/oB5BOxvynZSGR6Vj4JGEZw==;EndpointSuffix=core.windows.net"
+Account_name="picprocurestorageaccount"
 
 # Create your views here.
 def home(request):
@@ -45,16 +43,19 @@ def viewFiles(request):
 
 
 def deleteFile(blob_name):
-    blob_service_client = BlobServiceClient.from_connection_string(conn_str)
+    md = AzureMediaStorage()
+    md.location = 'samyak'
+    md.delete(blob_name)
+    """blob_service_client = BlobServiceClient.from_connection_string(conn_str)
     container_name = "folder1"
     container_client  = blob_service_client.get_container_client(container_name)
-    container_client.delete_blob(blob_name)
+    container_client.delete_blob(blob_name)"""
 def deleteContainer(container_name):
     """blob_service_client = BlobServiceClient.from_connection_string(conn_str)
     blob_service_client.delete_container(container_name)"""
 def getContainerDeletePage(request):
     if request.method == "POST":
         deleteContainer(request.POST.get('container_name',''))
-        return redirect(demoupload)
+        return redirect(fileupload)
     else:
         return render(request,'uploadFiles/deleteContainer.html')

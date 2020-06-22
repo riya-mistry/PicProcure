@@ -1,0 +1,12 @@
+<form method="POST" action="/users/signup" enctype="multipart/form-data"><br><br>{% csrf_token %} 
+user_name <input type="text" name='user_name' id='user_name'><br><br>
+first_name <input type="text" name="first_name" id="first_name"><br><br>
+last_name <input type="text" name="last_name" id="last_name"><br><br>
+email_id <input type="email" name="email_id" id="email_id"><br><br>
+password <input type="password" name="password" id="password"><br><br>
+re-enterpassword <input type="password" name="re-password" id="re-password"><br><br>
+profile_pic <input type="file" name="profile_pic" id="profile_pic"><br><br>
+<input type="submit" value="submit"><br>
+
+
+</form>
