@@ -2,9 +2,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <script src="js/wow.min.js"></script>
+    <script>
+    new WOW().init();
+    </script>
    
     {% load static %}
  
@@ -54,9 +62,6 @@ p{padding:10px}
     opacity:0.6;
 }
 
-
-
-
 /**
  * Button
  */
@@ -78,46 +83,6 @@ p{padding:10px}
   font-size: 18px;
 }
 
-/**
- * Change animation duration
- */
-.animated {
-  -webkit-animation-duration: 1.5s;
-  animation-duration: 1.5s;
-}
-
-fadeInRight {
-  from {
-    opacity: 0;
-    -webkit-transform: translate3d(100px, 0, 0);
-    transform: translate3d(100px, 0, 0);
-  }
-
-  to {
-    opacity: 1;
-    -webkit-transform: none;
-    transform: none;
-  }
-}
-
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    -webkit-transform: translate3d(100px, 0, 0);
-    transform: translate3d(100px, 0, 0);
-  }
-
-  to {
-    opacity: 1;
-    -webkit-transform: none;
-    transform: none;
-  }
-}
-
-.fadeInRight {
-  -webkit-animation-name: fadeInRight;
-  animation-name: fadeInRight;
-}
     </style>
   </head>
 
@@ -151,7 +116,7 @@ fadeInRight {
 </nav>
 {% block content %}
             <!-- Full Page Image Background Carousel Header -->
- <div id="demo" class="carousel slide" data-ride="carousel">
+ <div id="demo" class="carousel slide wow" data-ride="carousel">
 
   <!-- Indicators -->
   <ul class="carousel-indicators">
@@ -163,45 +128,30 @@ fadeInRight {
   <!-- The slideshow -->
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="{% static 'upload.jpg' %}" alt="Los Angeles" width="1100" height="500">
+       <div class="fill" style="background-image:url('{% static 'upload.jpg' %}');"></div>
+        <div class="carousel-caption" >
+              <h2 class="animate__animated animate__fadeInRight">Upload your photos!</h2>
+              <p class="animate__animated animate__fadeInLeft">Anywhere,Anytime and most simply upload your pics  of any event to share among you peeps! </p>
+              <p class="animate__animated animate__fadeInLeft"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
+        </div>      
     </div>
     <div class="carousel-item">
-      <img src="{% static 'sharing.jpg' %}" alt="Chicago" width="1100" height="500">
+      <div class="fill" style="background-image:url('{% static 'sharing.jpg' %}');"></div>
+      <div class="carousel-caption">
+            <h2 class="animate__animated animate__fadeInRight">"Sharing is Caring"</h2>
+            <p class="animate__animated animate__fadeInLeft">Share your uploaded pics to all those peeps who have registered for the event!</p>
+            <p class="animate__animated animate__fadeInLeft"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
+      </div>
     </div>
     <div class="carousel-item">
-      <img src="{% static 'privacy2.jpg' %}" alt="New York" width="1100" height="500">
+      <div class="fill" style="background-image:url('{% static 'privacy2.jpg' %}');"></div>
+                <div class="carousel-caption" style="color:blue">
+                     <h2 class="animate__animated animate__fadeInRight">"Your Privacy is Our Primacy"</h2>
+                     <p class="animate__animated animate__fadeInLeft">The registered users will get all and only those pics in they are persent!</p>
+                     <p class="animate__animated animate__fadeInLeft"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
+                </div>
     </div>
   </div>
-  <!-- <div class="carousel-inner">
-            <div class="item active">
-                
-                <div class="fill" style="background-image:url('{% static 'upload.jpg' %}');"></div>
-                <div class="carousel-caption">
-                     <h2 class="animated fadeInLeft">Caption Animation</h2>
-                     <p class="animated fadeInUp">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-                     <p class="animated fadeInUp"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
-                </div>
-            </div>
-            <div class="item">
-                
-                <div class="fill" style="background-image:url('{% static 'sharing.jpg' %}');"></div>
-                <div class="carousel-caption">
-                     <h2 class="animated fadeInDown">Caption Animation</h2>
-                     <p class="animated fadeInUp">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-                     <p class="animated fadeInUp"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
-                </div>
-            </div>
-            <div class="item">
-                
-                <div class="fill" style="background-image:url('{% static 'privacy2.jpg' %}');"></div>
-                <div class="carousel-caption">
-                     <h2 class="animated fadeInRight">Caption Animation</h2>
-                     <p class="animated fadeInRight">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-                     <p class="animated fadeInRight"><a href="#" class="btn btn-transparent btn-rounded btn-large">Learn More</a></p>
-                </div>
-            </div>
-        </div> -->
- 
   <a class="carousel-control-prev" href="#demo" data-slide="prev">
     <span class="carousel-control-prev-icon"></span>
   </a>
