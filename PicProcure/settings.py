@@ -119,22 +119,23 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
+#MEDIA_URL = '/media/'
+#STATIC_URL = '/static/'
 # this is the static files folder name which you created in django project root folder. This is different from above STATIC_URL. 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'statics'),
 ]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-DEFAULT_FILE_STORAGE = 'PicProcure.custom_azure.AzureMediaStorage'
-STATICFILES_STORAGE = 'PicProcure.custom_azure.AzureStaticStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+STATICFILES_STORAGE = 'PicProcure.custom_azure.AzureMediaStorage'
 STATIC_LOCATION = "static"
-MEDIA_LOCATION = "media"
+
 
 AZURE_ACCOUNT_NAME = "demoblobstorage101"
 AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+MEDIA_LOCATION = "media"
 STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
 MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
+
+MEDIA_ROOT='http://{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
