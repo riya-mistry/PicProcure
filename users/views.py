@@ -3,8 +3,9 @@ from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.template.context_processors import csrf 
-from .models import Users
+from .models import Users 
 from PicProcure.custom_azure import AzureMediaStorage
+from django.contrib.auth.models import User
 # Create your views here.
 def register(request):
     if request.method == "POST":
@@ -22,6 +23,9 @@ def register(request):
             md.location= "Profile_Pics"
             pp = md.save(user.first_name + user.last_name,file)
         user.save()
+        a = User.objects.create_user(user.user_name,user.email_id,user.password)
+        a.save()
+        
         render(request,'users/login.html')
     return render(request,'users/signup.html')
 
@@ -34,18 +38,22 @@ def auth_view(request):
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
     try:
-        user= Users.objects.get(user_name=username,password=password)
-        #user= Users.objects.raw('Select * from users_users where user_name=%s and password=%s',[username],[password])
-        #user = auth.authenticate(user_name=username, password=password)
-        if user is not None:
-            #auth.login(request, user)
-            return render(request,'uploadFiles/base.html', {"full_name": user.first_name})
+        user= User.objects.get(username=username)
+        print(user.password)
+        x = auth.authenticate(username= username,password=password)
+        print(x)
+        if x is not None:
+            auth.login(request,x)
+            print()
+            request.session['user_name'] = user.username
+            return render(request,'uploadFiles/base.html', {"full_name": request.session['user_name']})
 
         else:
             return render(request,'users/login.html', {"Invalid_msg": "Invalid Username or Password"})
     except:
-        return render(request,'users/login.html', {"Invalid_msg": "Invalid Username or Password"})
+        return render(request,'users/login.html', {"Invalid_msg": "Invalid Username or Password except"})
 
 def logout(request):
-    #auth.logout(request)
+
+    auth.logout(request)
     return render(request,'users/login.html')

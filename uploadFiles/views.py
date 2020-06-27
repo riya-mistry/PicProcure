@@ -5,13 +5,15 @@ from PicProcure.custom_azure import AzureMediaStorage
 #from azure.storage.blob import generate_blob_sas, BlobSasPermissions
 #from azure.storage.blob import generate_container_sas, ContainerSasPermissions
 from datetime import datetime, timedelta
+from django.contrib.auth.decorators import login_required
 conn_str = "DefaultEndpointsProtocol=https;AccountName=picprocurestorageaccount;AccountKey=febaaAtjhuePtOvpT5wI8o0OW8r16vu0NLy88/WUASiF02xFqZ7AL6lPeiXin11/oB5BOxvynZSGR6Vj4JGEZw==;EndpointSuffix=core.windows.net"
 Account_name="picprocurestorageaccount"
 
 # Create your views here.
+@login_required(login_url ='/users/login')
 def home(request):
-    viewFiles(request)
-    return render(request,'uploadFiles/base.html')
+    #viewFiles(request)
+    return render(request,'uploadFiles/base.html',{"full_name": request.session['user_name']})
     
 def fileupload(request):
     if request.method == 'POST' and request.FILES.getlist('myfile'):
