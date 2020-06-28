@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from PicProcure.custom_azure import AzureMediaStorage
-#from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
-#from azure.storage.blob import generate_blob_sas, BlobSasPermissions
-#from azure.storage.blob import generate_container_sas, ContainerSasPermissions
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
+from azure.storage.blob import BlockBlobService 
 conn_str = "DefaultEndpointsProtocol=https;AccountName=picprocurestorageaccount;AccountKey=febaaAtjhuePtOvpT5wI8o0OW8r16vu0NLy88/WUASiF02xFqZ7AL6lPeiXin11/oB5BOxvynZSGR6Vj4JGEZw==;EndpointSuffix=core.windows.net"
 Account_name="picprocurestorageaccount"
 
@@ -14,29 +12,38 @@ Account_name="picprocurestorageaccount"
 def home(request):
     #viewFiles(request)
     return render(request,'uploadFiles/base.html',{"full_name": request.session['user_name']})
-    
+
 def fileupload(request):
     if request.method == 'POST' and request.FILES.getlist('myfile'):
         myfile12 = request.FILES.getlist('myfile')
-        print (myfile12)
+        #print (myfile12)
+        md = AzureMediaStorage()
+        block_blob_service = BlockBlobService(account_name=md.account_name, account_key=md.account_key)
+        blob_containter = block_blob_service.create_container('felicific',public_access='Blob') 
+        
+        md.location = 'event'
+        md.azure_container = 'felicific'
         for myfile in myfile12:
             print (myfile)
-            md = AzureMediaStorage()
-            md.location = 'samyak'
-            fu = md.save(myfile.name,myfile)
-            uploaded_file_url = md.url(fu)
+            md._save(myfile.name,myfile)
+            #md.save(myfile.name,myfile)
         return render(request, 'uploadFiles/demoupload.html', {
-            'uploaded_file_url': uploaded_file_url
+            'uploaded_file_url': 'uploaded successfully'
         })
     return render(request, 'uploadFiles/demoupload.html')
 
 def viewFiles(request):
     md = AzureMediaStorage()
-    md.location='samyak'
-    files = md._blob_service(connection_string=conn_str).list_blob_names(container_name='media')
+    md.location='felicific'
+    #md._blob_service(connection_string=conn_str).list_blob_names(container_name='')
+    #files = md.connection_string(conn_str).get_container_client(container_name="media").list_blob_names()
+    #files = md._blob_service(connection_string=conn_str).list_blob_names(container_name='media',prefix="Event")
+    #md._blob_service(connection_string=conn_str).list_containers()
+    block_blob_service = BlockBlobService(account_name=md.account_name, account_key=md.account_key)
+    files = block_blob_service.list_blobs('felicific')
     urls = []
     for f in files:
-        urls.append(f)
+        urls.append(f.name)
         
     context = {'images': urls}
    

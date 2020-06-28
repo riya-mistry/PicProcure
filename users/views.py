@@ -3,7 +3,8 @@ from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.template.context_processors import csrf 
-from .models import Users 
+
+from users.models import Users
 from PicProcure.custom_azure import AzureMediaStorage
 from django.contrib.auth.models import User
 # Create your views here.
@@ -20,8 +21,9 @@ def register(request):
             file = request.FILES.get('profile_pic')
             user.profile_pic = user.user_name
             md = AzureMediaStorage()
-            md.location= "Profile_Pics"
-            pp = md.save(user.first_name + user.last_name,file)
+            #md.location= "Profile_Pics"
+            md.azure_container = 'profile-pics'
+            pp = md._save(user.first_name + user.last_name,file)
         user.save()
         a = User.objects.create_user(user.user_name,user.email_id,user.password)
         a.save()
@@ -56,4 +58,8 @@ def auth_view(request):
 def logout(request):
 
     auth.logout(request)
+    try:
+        del request.session['user_name']
+    except KeyError:
+        pass
     return render(request,'users/login.html')

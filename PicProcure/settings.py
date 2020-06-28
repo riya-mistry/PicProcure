@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'uploadFiles.apps.UploadfilesConfig',
     'users.apps.UsersConfig',
+    'events.apps.EventsConfig',
     'storages',
 ]
 
@@ -136,6 +137,6 @@ AZURE_ACCOUNT_NAME = "picprocurestorageaccount"
 AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
 MEDIA_LOCATION = "media"
 STATIC_URL = '/static/'
-MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/'
 
 MEDIA_ROOT='http://{AZURE_ACCOUNT_NAME}.blob.core.windows.net'

@@ -19,11 +19,13 @@ from django.conf.urls.static import static
 from django.urls import path,include
 from uploadFiles import views
 from users import views
+from events import urls,views
 urlpatterns = [
     path('uploadFiles/',include('uploadFiles.urls')),
     path('admin/', admin.site.urls),
-    path('users/',include('users.urls'),
-    )
+    path('users/',include('users.urls')),
+    path('events/',include('events.urls')),
+    
     # path('',views.home),
 ]
 if settings.DEBUG:
