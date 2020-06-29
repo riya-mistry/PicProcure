@@ -26,9 +26,38 @@ import io
 from PIL import Image
 import urllib.request
 import numpy
+import zipfile
+import requests
+from django.http import StreamingHttpResponse, HttpResponse
+from io import StringIO
+def stream_file(request):
+    file_url = "https://picprocurestorageaccount.blob.core.windows.net/felicific-dada1/dada1.jpg"
+    r = requests.get(file_url,stream=True)
+    resp = StreamingHttpResponse(streaming_content=r)
+    resp['Content-Disposition'] = 'attachment; filename="dada1.jpg"'
+    return resp
+
 def combine(request):
-    cluster('felicific','output','profile-pics')
-    return HttpResponse("hello")        
+    #download
+    md= AzureMediaStorage()
+    block_blob_service  = BlockBlobService(account_name=md.account_name,account_key=md.account_key)
+    generator = block_blob_service.list_blobs('felicific-vin1')
+    zf = zipfile.ZipFile('felicific-vin1'+'.zip', 
+             mode='w',
+             compression=zipfile.ZIP_DEFLATED, 
+             )
+    for blob in generator:
+        b = block_blob_service.get_blob_to_bytes('felicific-vin1', blob.name)
+        zf.writestr(blob.name, b.content)
+    zf.close()
+    s = StringIO()
+    resp = HttpResponse(s.getvalue(), content_type= "application/x-zip-compressed")
+    #resp['Content-Disposition'] = 'attachment; filename=felicific-vin1.zip'
+    resp['Content-Disposition'] = 'attachment; filename="felicific-vin1.zip"' 
+    return resp
+    #zf.close()
+    #context= {'blob':block_blob_service.get_blob_to_bytes('felicific-vin1', 'vin1.jpg')}
+    #return render(request,'events/download.html',context=context)        
 
 
 
@@ -56,12 +85,12 @@ def cluster(request):
     md = AzureMediaStorage()
     block_blob_service = BlockBlobService(account_name=md.account_name,account_key=md.account_key)
     # Download the pre trained models, unzip them and save them in the save folder as this file
-    
+    #
     predictor_path = 'C:/Users/lenovo/Desktop/PicProcure/events/shape_predictor_5_face_landmarks.dat'
     face_rec_model_path = 'C:/Users/lenovo/Desktop/PicProcure/events/dlib_face_recognition_resnet_model_v1.dat'
 
     faces_folder_path = block_blob_service.list_blobs(container_name='felicific')
-    output_folder = 'output'
+    output_folder = []
     check_folder = block_blob_service.list_blobs(container_name='profile-pics')
 
     username_list = []
@@ -77,7 +106,7 @@ def cluster(request):
     images = []
     output_list = []
     
-    """for img in check_folder:
+    for img in check_folder:
         
         print('Processing file:{}',format(img.name))
         url = "https://picprocurestorageaccount.blob.core.windows.net/profile-pics/"+ img.name
@@ -98,7 +127,7 @@ def cluster(request):
         # Compute the 128D vector that describes the face in img identified by shape.  
             face_descriptor = facerec.compute_face_descriptor(img1, shape)
             descriptors.append(face_descriptor)
-            images.append((img.name,img1, shape)) """     
+            images.append(('profile-pics',img.name,img1, shape))     
     print('profile pics ended')    
     for f in faces_folder_path:
         print("Processing file: {}".format(f.name))
@@ -106,6 +135,7 @@ def cluster(request):
         #img = dlib.load_rgb_image(f)
         #win = dlib.image_window()
         img = numpy.array(Image.open(io.BytesIO(urllib.request.urlopen(url).read())))
+        print('reading completed ' + f.name)
         #win.set_image(img)
         # Ask the detector to find the bounding boxes of each face. The 1 in the second argument indicates that we should upoutput_listple the image 1 time. This will make everything bigger and allow us to detect more faces.
         dets = detector(img, 1)
@@ -118,7 +148,8 @@ def cluster(request):
         # Compute the 128D vector that describes the face in img identified by shape.  
             face_descriptor = facerec.compute_face_descriptor(img, shape)
             descriptors.append(face_descriptor)
-            images.append((f.name,img, shape))
+            images.append(('felicific',f.name,img, shape))
+            print('image appended ' + f.name)
 
         # Cluster the faces.  
     print("event load completed")
@@ -137,20 +168,37 @@ def cluster(request):
         #output_folder_path = output_folder + '/output' + str(i) # Output folder for each cluster
         #os.path.normpath(output_folder_path)
         #os.makedirs(output_folder_path)
-        block_blob_service.create_container('output'+ str(i))
+        block_blob_service.create_container('output'+ str(i),public_access='blob')
+        
 
     # Save each face to the respective cluster folder
         print("Saving faces to output folder...")
         #img, shape = images[index]
             #file_path = os.path.join(output_folder_path,"face_"+str(k)+"_"+str(i))
         md.azure_container = 'output'+ str(i)
+        output_folder.append(md.azure_container)
             
         for k, index in enumerate(indices):
-            name,img, shape = images[index]
+            container,name,img, shape = images[index]
             #dlib.save_face_chip(img, shape, file_path, size=1000, padding = 2)
-            #url = "https://picprocurestorageaccount.blob.core.windows.net/felicific/"+ name
-            block_blob_service.copy_blob(container_name=md.azure_container,blob_name=name,copy_source="https://picprocurestorageaccount.blob.core.windows.net/felicific/"+ name)
+            url = "https://picprocurestorageaccount.blob.core.windows.net/"+ container + '/' + name
+            block_blob_service.copy_blob(container_name=md.azure_container,blob_name=name,copy_source=url)
            # md._save(name,img)
             if 0 == k:
                 output_list.append("ouput/output"+str(i)+"/face_0"+"_"+str(i)+".jpg")
+
+    for imgs in check_folder:
+    
+        for output in output_folder:
+            if block_blob_service.get_blob_metadata(container_name=output,blob_name=imgs.name) is not None:
+                container_name = 'felicific-' + imgs.name.split('.')[0]
+                block_blob_service.create_container(container_name=container_name,public_access='blob')
+                for i in block_blob_service.list_blobs(container_name=output):
+                    url =  url = "https://picprocurestorageaccount.blob.core.windows.net/" + output + '/'+i.name
+                    block_blob_service.copy_blob(container_name=container_name,blob_name=i.name,copy_source=url)
+                block_blob_service.delete_container(output)
+                output_folder.remove(output)
+                break
+
+
     return HttpResponse("Succuessfull")
