@@ -27,8 +27,7 @@ def register(request):
         user.save()
         a = User.objects.create_user(user.user_name,user.email_id,user.password)
         a.save()
-        
-        render(request,'users/login.html')
+        return render(request,'users/login.html')
     return render(request,'users/signup.html')
 
 def login(request):

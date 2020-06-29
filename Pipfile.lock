@@ -1,0 +1,38 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "2908327ca0b9d4e9c0bea16065071b9e259767beab89c7216927148b249e9f1e"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.7"
+        },
+        "sources": [
+            {
+                "name": "pypi",
+                "url": "https://pypi.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "cmake": {
+            "hashes": [
+                "sha256:0f375ea2bca581b6b2bb5c7bfded6b1b26ab3f3e497f8107a997d4ee054ff0a5",
+                "sha256:11a9d091bde8f7ade551d6868955e1525951433e39828ad105bc2dd6a7d8f42c",
+                "sha256:18e9066bdf183835f5a8b9a313fb978883dce69884359e79a499a06adeb45ea7",
+                "sha256:1d5a24f036e80c3c1d582552ca5f2701473721b52dbed925c1b6a09351d0afbc",
+                "sha256:6ac6bd55c1f9acd2e50618c23c3f555430b3bb222786897a17f71d4ef0215fe7",
+                "sha256:7f3b92402a7f9b30c0fd13683edacd525c1ee38d7c7ac118de6292a3255859d8",
+                "sha256:9c011ca190833d94485ccbbfbd39a53d0c796377a9ce3bf87f8aff33b5b5ee7c",
+                "sha256:9e3dee5a774d0df5bacb9f15e99d8fffe0010bd980fa9f5761de869ae1116da5",
+                "sha256:b46dbf4f11e2aa9933e90fa655f2e5f13c0a6b348af9aa586de67c14dd7fc731",
+                "sha256:cf1904c2c3ea1460fe51b9ea244da110450625d49535b1a0ddf19da21f1138a0",
+                "sha256:eed290f87c084e22427ddc7188bc06dba62d18f46f5bfbf6fe539799f8148260"
+            ],
+            "index": "pypi",
+            "version": "==3.17.3"
+        }
+    },
+    "develop": {}
+}

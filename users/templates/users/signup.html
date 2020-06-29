@@ -1,4 +1,4 @@
-<form method="POST" action="/users/signup" enctype="multipart/form-data"><br><br>{% csrf_token %} 
+<!-- <form method="POST" action="/users/signup" enctype="multipart/form-data"><br><br>{% csrf_token %} 
 user_name <input type="text" name='user_name' id='user_name'><br><br>
 first_name <input type="text" name="first_name" id="first_name"><br><br>
 last_name <input type="text" name="last_name" id="last_name"><br><br>
@@ -9,4 +9,147 @@ profile_pic <input type="file" name="profile_pic" id="profile_pic"><br><br>
 <input type="submit" value="submit"><br>
 
 
-</form>
+</form> -->
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    {% load static %}
+
+<style>
+.register{
+    background: -webkit-linear-gradient(left, #b04ef2, #00c6ff);
+    width:100%;
+    height:100%;
+    padding-top: 3%;
+   
+}
+.register-left{
+    text-align: center;
+    color: #fff;
+    margin-top: 4%;
+}
+.register-left input{
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    width: 60%;
+    background: #f8f9fa;
+    font-weight: bold;
+    color: #383d41;
+    margin-top: 30%;
+    margin-bottom: 3%;
+    cursor: pointer;
+}
+.register-right{
+    background: #f7fcfc;
+    border-top-left-radius: 10% 50%;
+    border-bottom-left-radius: 10% 50%;
+}
+.register-left img{
+    margin-top: 15%;
+    margin-bottom: 5%;
+    height:150px;
+    width: 175px;
+    -webkit-animation: mover 2s infinite  alternate;
+    animation: mover 1s infinite  alternate;
+}
+@-webkit-keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+@keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+.register-left p{
+    font-weight: lighter;
+    padding: 12%;
+    margin-top: -9%;
+}
+.register .register-form{
+    padding: 10%;
+    padding-bottom:3%;
+    padding-top:2px;
+    margin-top: 10%;
+}
+.btnRegister{
+    float: right;
+    margin-top: 10%;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    background: #0062cc;
+    color: #fff;
+    font-weight: 600;
+    width: 50%;
+    cursor: pointer;
+}
+.register-heading{
+    text-align: center;
+    margin-top: 8%;
+    
+    color: #b103fc;
+}
+</style>
+</head>
+
+<body>
+
+    <div class="container-fluid register">
+        <div class="row">
+            <div class="col-md-3 register-left">
+                <img src="{% static 'logo2.png' %}" alt=""/>
+                <h3 >Welcome</h3>
+                <form style="margin:50px" method="get" action="/users/login">
+                    <h6  style="padding-bottom:0px">Aleady Registered?</h6>
+                    
+                    <input type="submit" style="margin:0px" value="Login!"/>
+                </form>
+                
+            </div>
+            <div class="col-md-9 register-right animate__animated animate__fadeInRight">
+                 <div >
+                    <div>
+                        <h1 class="register-heading">Sign Up!</h1>      
+                        <form class="row register-form" method="POST" action="/users/signup" enctype="multipart/form-data">{% csrf_token %}
+                            <div class="col-md-6">
+                                <div class="form-group animate__animated animate__zoomIn"  >
+                                    <input type="text" class="form-control" placeholder="First Name *" value="" name='first_name' style="border-radius:50px; border-color:#b103fc"/>
+                                </div>
+                                <div class="form-group animate__animated animate__zoomIn">
+                                    <input type="text" class="form-control" placeholder="Last Name *" value="" name='last_name' style="border-radius:50px; border-color:#b103fc"/>
+                                </div>
+                                <div class="form-group animate__animated animate__zoomIn">
+                                    <input type="password" class="form-control" placeholder="Password *" value="" name="password" style="border-radius:50px; border-color:#b103fc"/>
+                                </div>
+                                <div class="form-group animate__animated animate__zoomIn">
+                                    <input type="password" class="form-control"  placeholder="Confirm Password *" value="" name="re-password" style="border-radius:50px; border-color:#b103fc"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="email" class="form-control  animate__animated animate__zoomIn" placeholder="Your Email *" value="" name="email_id" style="border-radius:50px; border-color:#b103fc"/>
+                                </div>
+                               
+                                <div class="form-group">
+                                    <input type="text" class="form-control animate__animated animate__zoomIn" placeholder="Username!" value="" name='user_name' style="border-radius:50px; border-color:#b103fc"/>
+                                </div>
+                                <div class="form-group">
+                                    <input type="file"  placeholder="Profile Pic" name="profile_pic" id="profile_pic" />
+                                </div>
+
+                                <input type="submit" class="btnRegister"  value="Register"/>
+                            </div>
+                        </form>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

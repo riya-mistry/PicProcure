@@ -150,7 +150,7 @@ def cluster(request):
             #dlib.save_face_chip(img, shape, file_path, size=1000, padding = 2)
             #url = "https://picprocurestorageaccount.blob.core.windows.net/felicific/"+ name
             block_blob_service.copy_blob(container_name=md.azure_container,blob_name=name,copy_source="https://picprocurestorageaccount.blob.core.windows.net/felicific/"+ name)
-            md._save(name,img)
+           # md._save(name,img)
             if 0 == k:
                 output_list.append("ouput/output"+str(i)+"/face_0"+"_"+str(i)+".jpg")
     return HttpResponse("Succuessfull")
