@@ -29,7 +29,7 @@ import numpy
 import zipfile
 import requests
 from django.http import StreamingHttpResponse, HttpResponse
-from io import StringIO
+from io import StringIO,BytesIO
 def stream_file(request):
     file_url = "https://picprocurestorageaccount.blob.core.windows.net/felicific-dada1/dada1.jpg"
     r = requests.get(file_url,stream=True)
@@ -40,26 +40,18 @@ def stream_file(request):
 def combine(request):
     #download
     md= AzureMediaStorage()
+    byte = BytesIO()
     block_blob_service  = BlockBlobService(account_name=md.account_name,account_key=md.account_key)
     generator = block_blob_service.list_blobs('felicific-vin1')
-    zf = zipfile.ZipFile('felicific-vin1'+'.zip', 
-             mode='w',
-             compression=zipfile.ZIP_DEFLATED, 
-             )
+    zf = zipfile.ZipFile( byte,mode='w',compression=zipfile.ZIP_DEFLATED)
     for blob in generator:
         b = block_blob_service.get_blob_to_bytes('felicific-vin1', blob.name)
         zf.writestr(blob.name, b.content)
     zf.close()
-    s = StringIO()
-    resp = HttpResponse(s.getvalue(), content_type= "application/x-zip-compressed")
-    #resp['Content-Disposition'] = 'attachment; filename=felicific-vin1.zip'
+    resp = HttpResponse(byte.getvalue(), content_type= "application/x-zip-compressed")
+
     resp['Content-Disposition'] = 'attachment; filename="felicific-vin1.zip"' 
     return resp
-    #zf.close()
-    #context= {'blob':block_blob_service.get_blob_to_bytes('felicific-vin1', 'vin1.jpg')}
-    #return render(request,'events/download.html',context=context)        
-
-
 
 @login_required(login_url='/users/login')
 def new_event(request):
