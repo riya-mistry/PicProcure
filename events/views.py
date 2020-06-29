@@ -51,31 +51,23 @@ def new_event(request):
 
 
 
-def cluster(event,event_output,profile_pics):
+def cluster(request):
     start = time.time()
-
     md = AzureMediaStorage()
-    #md.account_key = "pmDI3nQh1In1o8sFaXaxa2QyNPvqVViNsCL29yikAlZdvnZadToeczwdYCsIVBUiSgegQfW+TG4gAaxvLASHfA=="
-    #md.account_name="picprocure2"
     block_blob_service = BlockBlobService(account_name=md.account_name,account_key=md.account_key)
-        # Download the pre trained models, unzip them and save them in the save folder as this file
-    predictor_path = 'C:/Users/lenovo/Desktop/PicProcure/events/shape_predictor_5_face_landmarks.dat' # Download from http://dlib.net/files/dlib_face_recognition_resnet_model_v1.dat.bz2
-    face_rec_model_path = 'C:/Users/lenovo/Desktop/PicProcure/events/dlib_face_recognition_resnet_model_v1.dat' # Download from http://dlib.net/files/shape_predictor_5_face_landmarks.dat.bz2
-    faces_folder_path = block_blob_service.list_blobs(container_name=event)
-    output_folder = event_output
-    check_folder = block_blob_service.list_blobs(container_name=profile_pics)
+    # Download the pre trained models, unzip them and save them in the save folder as this file
+    
+    predictor_path = 'C:/Users/lenovo/Desktop/PicProcure/events/shape_predictor_5_face_landmarks.dat'
+    face_rec_model_path = 'C:/Users/lenovo/Desktop/PicProcure/events/dlib_face_recognition_resnet_model_v1.dat'
+
+    faces_folder_path = block_blob_service.list_blobs(container_name='felicific')
+    output_folder = 'output'
+    check_folder = block_blob_service.list_blobs(container_name='profile-pics')
+
     username_list = []
     for f in check_folder:
         username_list.append(f.name)
-    """t = sys.argv[3]
-    for root, dirs, files in os.walk(t):
-        for file in files:
-            #append the file name to the list
-         username_list.append(os.path.join(root, file))"""
-    #print(username_list)
-
-    
-
+    print(username_list)
 
     detector = dlib.get_frontal_face_detector() #a detector to find the faces
     sp = dlib.shape_predictor(predictor_path) #shape predictor to find face landmarks
@@ -84,26 +76,16 @@ def cluster(event,event_output,profile_pics):
     descriptors = []
     images = []
     output_list = []
-
-    """for f in glob.glob(os.path.join(check_folder, "*.jpg")):
-        print("Processing file: {}".format(f))
-        img1 = dlib.load_rgb_image(f)"""
     
-    for img in check_folder:
+    """for img in check_folder:
         
         print('Processing file:{}',format(img.name))
-        #block_blob_service.get_blob_to_path(container_name=profile_pics,blob_name=img,file_path=Path().absolute(),open_mode='rb')
         url = "https://picprocurestorageaccount.blob.core.windows.net/profile-pics/"+ img.name
         #img1 = dlib.load_rgb_image(urllib.request.urlopen(url).read())
         #win = dlib.image_window()
-
         img1 = numpy.array(Image.open(io.BytesIO(urllib.request.urlopen(url).read())))
-
         #win.set_image(img1)
         
-
-
-
     # Ask the detector to find the bounding boxes of each face. The 1 in the second argument indicates that we should upoutput_listple the image 1 time. This will make everything bigger and allow us to detect more faces.
         dets = detector(img1, 1)
         print("Number of faces detected: {}".format(len(dets)))
@@ -116,7 +98,7 @@ def cluster(event,event_output,profile_pics):
         # Compute the 128D vector that describes the face in img identified by shape.  
             face_descriptor = facerec.compute_face_descriptor(img1, shape)
             descriptors.append(face_descriptor)
-            images.append((img1, shape))      
+            images.append((img.name,img1, shape)) """     
     print('profile pics ended')    
     for f in faces_folder_path:
         print("Processing file: {}".format(f.name))
@@ -129,13 +111,14 @@ def cluster(event,event_output,profile_pics):
         dets = detector(img, 1)
         print("Number of faces detected: {}".format(len(dets)))
         # Now process each face we found.
+
         for k, d in enumerate(dets):
         # Get the landmarks/parts for the face in box d.
             shape = sp(img, d)
         # Compute the 128D vector that describes the face in img identified by shape.  
             face_descriptor = facerec.compute_face_descriptor(img, shape)
             descriptors.append(face_descriptor)
-            images.append((img, shape))
+            images.append((f.name,img, shape))
 
         # Cluster the faces.  
     print("event load completed")
@@ -155,6 +138,7 @@ def cluster(event,event_output,profile_pics):
         #os.path.normpath(output_folder_path)
         #os.makedirs(output_folder_path)
         block_blob_service.create_container('output'+ str(i))
+
     # Save each face to the respective cluster folder
         print("Saving faces to output folder...")
         #img, shape = images[index]
@@ -162,8 +146,11 @@ def cluster(event,event_output,profile_pics):
         md.azure_container = 'output'+ str(i)
             
         for k, index in enumerate(indices):
-            img, shape = images[index]
+            name,img, shape = images[index]
             #dlib.save_face_chip(img, shape, file_path, size=1000, padding = 2)
-            md._save(img.name,img)
+            #url = "https://picprocurestorageaccount.blob.core.windows.net/felicific/"+ name
+            block_blob_service.copy_blob(container_name=md.azure_container,blob_name=name,copy_source="https://picprocurestorageaccount.blob.core.windows.net/felicific/"+ name)
+            md._save(name,img)
             if 0 == k:
                 output_list.append("ouput/output"+str(i)+"/face_0"+"_"+str(i)+".jpg")
+    return HttpResponse("Succuessfull")
