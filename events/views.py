@@ -57,8 +57,8 @@ def cluster(request):
     block_blob_service = BlockBlobService(account_name=md.account_name,account_key=md.account_key)
     # Download the pre trained models, unzip them and save them in the save folder as this file
     
-    predictor_path = 'C:/Users/lenovo/Desktop/PicProcure/events/shape_predictor_5_face_landmarks.dat'
-    face_rec_model_path = 'C:/Users/lenovo/Desktop/PicProcure/events/dlib_face_recognition_resnet_model_v1.dat'
+    predictor_path = 'C:/Users/User/Desktop/PicProcure/PicProcure/events/shape_predictor_5_face_landmarks.dat'
+    face_rec_model_path = 'C:/Users/User/Desktop/PicProcure/PicProcure/events/dlib_face_recognition_resnet_model_v1.dat'
 
     faces_folder_path = block_blob_service.list_blobs(container_name='felicific')
     output_folder = 'output'

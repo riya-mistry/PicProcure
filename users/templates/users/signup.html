@@ -75,7 +75,7 @@ profile_pic <input type="file" name="profile_pic" id="profile_pic"><br><br>
     padding: 10%;
     padding-bottom:3%;
     padding-top:2px;
-    margin-top: 10%;
+    /* margin-top: 10%; */
 }
 .btnRegister{
     float: right;
@@ -94,6 +94,26 @@ profile_pic <input type="file" name="profile_pic" id="profile_pic"><br><br>
     margin-top: 8%;
     
     color: #b103fc;
+}
+.new-button {
+    display: inline-block;
+    padding: 8px 12px; 
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #9c27b0;
+    font-size: 16px;
+    color: #fff;
+}
+input[type="file"] {
+  position: absolute;
+  z-index: -1;
+  top: 6px;
+  left: 8px;
+  font-size: 15px;
+  color: rgb(153,153,153);
+}
+.button-wrap {
+  position: relative;
 }
 </style>
 </head>
@@ -115,34 +135,41 @@ profile_pic <input type="file" name="profile_pic" id="profile_pic"><br><br>
             <div class="col-md-9 register-right animate__animated animate__fadeInRight">
                  <div >
                     <div>
-                        <h1 class="register-heading">Sign Up!</h1>      
+                        <h1 class="register-heading">Sign Up!</h1>
+                        <p style="text-align:center;color:red">{{Invalid}}</p>  
                         <form class="row register-form" method="POST" action="/users/signup" enctype="multipart/form-data">{% csrf_token %}
                             <div class="col-md-6">
                                 <div class="form-group animate__animated animate__zoomIn"  >
-                                    <input type="text" class="form-control" placeholder="First Name *" value="" name='first_name' style="border-radius:50px; border-color:#b103fc"/>
+                                    <input type="text" class="form-control" placeholder="First Name *" value="" name='first_name' required minlength=3 maxlength=20 style="border-radius:50px; border-color:#b103fc"/>
                                 </div>
                                 <div class="form-group animate__animated animate__zoomIn">
-                                    <input type="text" class="form-control" placeholder="Last Name *" value="" name='last_name' style="border-radius:50px; border-color:#b103fc"/>
+                                    <input type="text" class="form-control" placeholder="Last Name *" value="" name='last_name' required minlength=3 maxlength=20 style="border-radius:50px; border-color:#b103fc"/>
                                 </div>
                                 <div class="form-group animate__animated animate__zoomIn">
-                                    <input type="password" class="form-control" placeholder="Password *" value="" name="password" style="border-radius:50px; border-color:#b103fc"/>
+                                    <input type="password" class="form-control" placeholder="Password *" value="" name="password"required minlength=8 maxlength=20 style="border-radius:50px; border-color:#b103fc" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" />
                                 </div>
                                 <div class="form-group animate__animated animate__zoomIn">
-                                    <input type="password" class="form-control"  placeholder="Confirm Password *" value="" name="re-password" style="border-radius:50px; border-color:#b103fc"/>
+                                    <input type="password" class="form-control"  placeholder="Confirm Password *" value="" name="re-password" required minlength=8 maxlength=20 style="border-radius:50px; border-color:#b103fc" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="email" class="form-control  animate__animated animate__zoomIn" placeholder="Your Email *" value="" name="email_id" style="border-radius:50px; border-color:#b103fc"/>
+                                    <input type="email" class="form-control  animate__animated animate__zoomIn" placeholder="Your Email *" value="" required email name="email_id" style="border-radius:50px; border-color:#b103fc"/>
                                 </div>
                                
                                 <div class="form-group">
-                                    <input type="text" class="form-control animate__animated animate__zoomIn" placeholder="Username!" value="" name='user_name' style="border-radius:50px; border-color:#b103fc"/>
+                                    <input type="text" class="form-control animate__animated animate__zoomIn" placeholder="Username *" title="Must be Unique" value="" required minlength=3 maxlength=20 name='user_name' style="border-radius:50px; border-color:#b103fc"/>
                                 </div>
-                                <div class="form-group">
-                                    <input type="file"  placeholder="Profile Pic" name="profile_pic" id="profile_pic" />
-                                </div>
+                                <!-- <div class="form-group">
+                                    <input type="file"  placeholder="Profile Pic" name="profile_pic" id="profile_pic" required />
+                                </div> -->
 
+                                <div class="button-wrap">
+                                    <label class ="new-button" for="upload"> Choose Pic
+                                    <!-- <input id="upload" type="file" placeholder="Profile Pic" name="profile_pic" id="profile_pic" required accept="image/*"> -->
+                                    <input id="upload" type="file" placeholder="Profile Pic" name="profile_pic" id="profile_pic" required accept=".png,.jpg,.jpeg">
+                                </div>
+                            
                                 <input type="submit" class="btnRegister"  value="Register"/>
                             </div>
                         </form>
