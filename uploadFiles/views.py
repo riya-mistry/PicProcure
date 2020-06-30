@@ -40,7 +40,7 @@ def viewFiles(request):
     #files = md._blob_service(connection_string=conn_str).list_blob_names(container_name='media',prefix="Event")
     #md._blob_service(connection_string=conn_str).list_containers()
     block_blob_service = BlockBlobService(account_name=md.account_name, account_key=md.account_key)
-    files = block_blob_service.list_blobs('felicific')
+    files = block_blob_service.list_blobs('output0')
     urls = []
     for f in files:
         urls.append(f.name)
