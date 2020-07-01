@@ -87,7 +87,12 @@ DATABASES = {
         'PORT':'3306',
     }
 }
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'picprocure@gmail.com'
+EMAIL_HOST_PASSWORD = 'ashsamriya'
+EMAIL_PORT = 25
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
