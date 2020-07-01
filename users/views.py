@@ -6,11 +6,8 @@ from django.template.context_processors import csrf
 from users.models import Users
 from PicProcure.custom_azure import AzureMediaStorage
 from django.contrib.auth.models import User
-<<<<<<< HEAD
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.base_user import BaseUserManager
-=======
->>>>>>> faf04c06a4dcdb0fe212c22db06ab380c9c4556f
 from django.core.mail import EmailMessage
 from django.conf import settings
 # Create your views here.
@@ -80,7 +77,6 @@ def logout(request):
         pass
     return render(request,'uploadFiles/base.html')
 
-<<<<<<< HEAD
 @login_required(login_url ='/users/login')
 def change_password(request):
     if request.method == "POST":
@@ -148,11 +144,9 @@ def view_update_user(request):
             u.save()
         user.save()
     return render(request,'users/profile.html',{'user':user})
-=======
 def feedback(request):
     user=Users.objects.get(user_name=request.session['user_name'])
     body=request.POST.get('description','')
     email = EmailMessage("Here is my Feedback:  ",body,user.email_id, to=[settings.EMAIL_HOST_USER] )
     email.send()
     return (request,"send")
->>>>>>> faf04c06a4dcdb0fe212c22db06ab380c9c4556f
