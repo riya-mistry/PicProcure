@@ -124,3 +124,20 @@ def reset_password(request):
                 return render(request,'users/reset-password.html',{'status':"Password not matching or incorrect format"})
         else:
             return render(request,'users/reset-password.html',{'status':"Access Code Incorrect or expired"})
+
+
+def view_update_user(request):
+    user = Users.objects.get(user_name=request.session['user_name'])
+    if request.method == "POST":
+        user.first_name = request.POST.get('first_name','')
+        user.last_name = request.POST.get('last_name','')
+        email_id = request.POST.get('email_id','')
+        if user.email_id != email_id:
+            email = EmailMessage("About Your Email Change","This is to verify your mail",settings.EMAIL_HOST_USER,to=[email_id])
+            email.send() 
+            user.email_id = email_id
+            u = User.objects.get(username=user.user_name)
+            u.email = email_id
+            u.save()
+        user.save()
+    return render(request,'users/profile.html',{'user':user})
