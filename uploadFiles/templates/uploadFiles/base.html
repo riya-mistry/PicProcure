@@ -10,8 +10,13 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
     />
-    
-   
+
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital@1&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     {% load static %}
  
     <!-- use django static tag ton load js file and css file. -->
@@ -80,12 +85,151 @@ p{padding:10px}
   padding: 11px 45px;
   font-size: 18px;
 }
+.servicebg{
+  background: -webkit-linear-gradient(left, #e52a67, #00c6ff);
+    
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+.services{
+  background-color:white;
+  border-radius:30px;
+  text-align:center;
+  padding:10px;
+  margin:auto; */
+}
+a:link,
+a:active,
+a:visited{
+  color:rgba(255,255,255,1);
+}
 
+a:hover{
+  color:rgba(255,255,255,0.6);
+}
+
+.gray {
+  color: #a5a5a5;
+}
+
+.team{
+  margin:40px;
+}
+
+.team-member {
+  margin: 15px 0;
+  padding: 0;
+}
+
+.team-member figure {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  text-align: center;
+  height:400px;
+  margin: 0;
+}
+
+.team-member figure img {
+  width:100%
+  
+}
+
+.team-member figcaption p {
+  font-size: 16px;
+}
+
+.team-member figcaption ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.team-member figcaption ul {
+  visibility: visible;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  -o-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+
+.team-member figcaption ul li {
+  display: inline-block;
+  padding: 10px;
+}
+
+.team-member h4 {
+  margin: 10px 0 0;
+  padding: 0;
+}
+
+.team-member figcaption {
+  padding: 50px;
+  color: transparent;
+  background-color: transparent;
+  position: absolute;
+  z-index: 996;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.team-member figure:hover figcaption {
+  visibility: visible;
+  color: #fff;
+  background: rgba(229, 42, 103, 0.9);
+  /* Primary color, can be changed via colors.css */
+  
+  height: 100%;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.team-member figure:hover figcaption ul li a:hover {
+  color: rgba(49, 49, 49, .97);
+}
+
+.team-member figure img {
+  -webkit-transform: scale(1) rotate(0) translateY(0);
+  -moz-transform: scale(1) rotate(0) translateY(0);
+  -o-transform: scale(1) rotate(0) translateY(0);
+  -ms-transform: scale(1) rotate(0) translateY(0);
+  transform: scale(1) rotate(0) translateY(0);
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.team-member figure:hover img {
+  -webkit-transform: scale(1.1) rotate(1deg) translateY(12px);
+  -moz-transform: scale(1.1) rotate(1deg) translateY(12px);
+  -o-transform: scale(1.1) rotate(1deg) translateY(12px);
+  -ms-transform: scale(1.1) rotate(1deg) translateY(12px);
+  transform: scale(1.1) rotate(1deg) translateY(12px);
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
     </style>
   </head>
 
   <body>
-  <nav class="navbar navbar-dark bg-custom-1 navbar-expand-sm" style="opacity:0.5,z-index:3">
+   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+  <nav class="navbar navbar-dark bg-custom-1 navbar-expand-sm sticky-top" style="opacity:0.5,z-index:3">
   <a class="navbar-brand" href="#">
     <img src="{% static 'only-logo.png' %}"  height="40" alt="logo">
     <img src="{% static 'title.png' %}"  height="40" alt="logo">
@@ -178,7 +322,137 @@ p{padding:10px}
     <span class="carousel-control-next-icon"></span>
   </a>
 </div>
+<br>
+<br>
+
+<div class="row">
+  <div class="col-md-5 "data-aos="fade-right" style="text-align:center">
+    <img src="{% static 'logo2.png' %}" style="height:250px;width: 295px;"/>
+  </div>
+  <div class="col-md-7" data-aos="fade-left" style="text-align:center">
+    <h2 style="font-family: 'Montserrat Subrayada', sans-serif;">About</h2>
+    <p style="font-family: 'Work Sans', sans-serif;">
+    Pic Procure is a place which provides you the one thing you always want to cherish, your "Memories" in the form of "Pics", either it's of an event or a function and any plae you visited with your family, friends and loved ones we always want to capture the moment.
+    But many times its been like others have taken the photographs and we want from them and then we have to find those in which we are and take them, or else to maintain the privacy of other person's photo we need to ask them to find their pics and give them.
+    As tidious it sounds, it is very time consuming too. Thus providing your a medium that those this work for you and provide you your own pics of the specific event! Isn't that Great!!...
+    </p>
+  </div>
+</div>
+<div class="servicebg" data-aos="fade-up">
+  <div class="col-md-12" data-aos="fade-right" style="text-align:center">
+      <h2 style="font-family: 'Montserrat Subrayada', sans-serif; justify:center">At Your Service</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-2"  data-aos="zoom-in" data-aos-duration="1000">
+      <div class="col-md-12  services" >
+        <img src="{% static 'upl.png' %}" style="height:100px;width: 130px;" />
+        <p style="font-family: 'Work Sans', sans-serif;font-weight:bold">Easily Upload all the pics of the Event!</p>
+      </div>
+    </div>
+    <div class="col-md-2"  data-aos="zoom-in" data-aos-duration="1000">
+      <div class="col-md-12 services" >
+        <img src="{% static 'regis.png' %}" style="height:100px;width: 100px;" />
+        <p style="font-family: 'Work Sans', sans-serif;font-weight:bold">One click and you registered the Event!</p>
+      </div>
+    </div>
+    <div class="col-md-2"  data-aos="zoom-in" data-aos-duration="1000">
+      <div class="col-md-12 services" >
+        <img src="{% static 'face.png' %}" style="height:100px;width: 100px;" />
+        <p style="font-family: 'Work Sans', sans-serif;font-weight:bold"> Fastest face-clusturring algorithm</p>
+      </div>
+    </div>
+    <div class="col-md-2"  data-aos="zoom-in" data-aos-duration="1000">
+      <div class="col-md-12 services" >
+        <img src="{% static 'mail.png' %}" style="height:100px;width: 100px;" />
+        <p style="font-family: 'Work Sans', sans-serif;font-weight:bold">Get Your own Pics in no time after registerations end!</p>
+      </div>
+    </div>
+    <div class="col-md-2"  data-aos="zoom-in" data-aos-duration="1000">
+      <div class="col-md-12 services" >
+        <img src="{% static 'prv.png' %}" style="height:100px;width: 100px;" />
+        <p style="font-family: 'Work Sans', sans-serif;font-weight:bold">No one can see your own pic except YOU!</p>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</div>
+
+<br>
+<br>
+
+<!-- Our team Section -->
+<section id="team" class="team content-section">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h2 style="font-family: 'Montserrat Subrayada', sans-serif;">Our Team</h2>
+        <!-- <h3 class="caption gray">Meet the people who make awesome stuffs</h3> -->
+      </div><!-- /.col-md-12 -->
+
+      <div class="container">
+        <div class="row">
+
+          <div class="col-md-4" >
+            <div class="team-member">
+              <figure data-aos="flip-right" data-aos-duration="1000">
+                <img src="{%static 'smk.jpeg'%}" alt="" class="img-responsive">
+                <figcaption>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae asperiores mollitia.</p>
+                  <ul>
+                    <li><a href=""><i class="fa fa-facebook fa-2x"></i></a></li>
+                    <li><a href=""><i class="fa fa-twitter fa-2x"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/samyak-mehta-958269167/" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a></li>
+                  </ul>
+                </figcaption>
+              </figure>
+              <h4>Samyak Mehta</h4>
+              <p>Founder</p>
+            </div><!-- /.team-member-->
+          </div><!-- /.col-md-4 -->
+
+          <div class="col-md-4">
+            <div class="team-member">
+              <figure data-aos="flip-right" data-aos-duration="1000">
+                <img src="{%static 'ashu.jpeg'%}" alt="" class="img-responsive">
+                <figcaption>
+                  <p>Neque minima ea, a praesentium saepe nihil maxime quod esse numquam explicabo eligendi.</p>
+                  <ul>
+                    <li><a href=""><i class="fa fa-facebook fa-2x"></i></a></li>
+                    <li><a href=""><i class="fa fa-instagram fa-2x"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/ashutosh-gupta-5b300479/" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a></li>
+                  </ul>
+                </figcaption>
+              </figure>
+              <h4>Ashutosh Gupta</h4>
+              <p>Founder</p>
+            </div><!-- /.team-member-->
+          </div><!-- /.col-md-4 -->
+
+          <div class="col-md-4">
+            <div class="team-member">
+              <figure data-aos="flip-right" data-aos-duration="1000">
+                <img src="{%static 'riya.jpeg'%}" alt="" class="img-responsive">
+                <figcaption>
+                  <p>Temporibus dolor, quisquam consectetur molestias, veniam voluptatum. Beatae alias omnis totam.</p>
+                  <ul>
+                    <li><a href=""><i class="fa fa-facebook fa-2x"></i></a></li>
+                    <li><a href=""><i class="fa fa-twitter fa-2x"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/riya-mistry-983a58186/" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a></li>
+                  </ul>
+                </figcaption>
+              </figure>
+              <h4>Riya Mistry</h4>
+              <p>Founder</p>
+            </div><!-- /.team-member-->
+          </div><!-- /.col-md-4 -->
 
 
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+
+    </div><!-- /.row -->
+  </div><!-- /.container -->
+</section><!-- /.our-team -->
 {% endblock content %}
 </body>
