@@ -5,4 +5,6 @@ urlpatterns = [
     path('demo',views.combine),
     path('cluster',views.cluster),
     path('download',views.stream_file),
+    path('register/<slug:eventname>/',views.register),
+    path('view-events',views.viewEvents),
 ]

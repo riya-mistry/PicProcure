@@ -4,6 +4,7 @@ from PicProcure.custom_azure import AzureMediaStorage
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from azure.storage.blob import BlockBlobService 
+from users.models import Events
 conn_str = "DefaultEndpointsProtocol=https;AccountName=picprocurestorageaccount;AccountKey=febaaAtjhuePtOvpT5wI8o0OW8r16vu0NLy88/WUASiF02xFqZ7AL6lPeiXin11/oB5BOxvynZSGR6Vj4JGEZw==;EndpointSuffix=core.windows.net"
 Account_name="picprocurestorageaccount"
 
@@ -13,7 +14,7 @@ def home(request):
     #viewFiles(request)
     return render(request,'uploadFiles/base.html',{"full_name": request.session['user_name']})
 
-def fileupload(request):
+def fileupload(request,eventname):
     if request.method == 'POST' and request.FILES.getlist('myfile'):
         myfile12 = request.FILES.getlist('myfile')
         #print (myfile12)
@@ -30,7 +31,9 @@ def fileupload(request):
         return render(request, 'uploadFiles/demoupload.html', {
             'uploaded_file_url': 'uploaded successfully'
         })
-    return render(request, 'uploadFiles/demoupload.html')
+    event = Events.objects.get(event_name = eventname)
+    test = datetime.now().minute < event.creation_time.minute + 20
+    return render(request, 'uploadFiles/demoupload.html',{"test":test})
 
 def viewFiles(request):
     md = AzureMediaStorage()

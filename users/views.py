@@ -137,7 +137,9 @@ def view_update_user(request):
         email_id = request.POST.get('email_id','')
         if user.email_id != email_id:
             email = EmailMessage("About Your Email Change","This is to verify your mail",settings.EMAIL_HOST_USER,to=[email_id])
-            email.send() 
+            temp = email.send() 
+            if temp is None:
+                return HttpResponse("Error")
             user.email_id = email_id
             u = User.objects.get(username=user.user_name)
             u.email = email_id
@@ -145,8 +147,9 @@ def view_update_user(request):
         user.save()
     return render(request,'users/profile.html',{'user':user})
 def feedback(request):
-    user=Users.objects.get(user_name=request.session['user_name'])
-    body=request.POST.get('description','')
-    email = EmailMessage("Here is my Feedback:  ",body,user.email_id, to=[settings.EMAIL_HOST_USER] )
-    email.send()
-    return (request,"send")
+    if request.method == "POST":
+        user=Users.objects.get(user_name=request.session['user_name'])
+        body= user.user_name + request.POST.get('description','')
+        email = EmailMessage("Here is my Feedback:  " ,body,settings.EMAIL_HOST_USER, to=[settings.EMAIL_HOST_USER] )
+        email.send()
+    return render(request,'uploadFiles/base.html',{"send":"send"})

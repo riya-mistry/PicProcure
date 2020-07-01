@@ -1,0 +1,7 @@
+{% for e in events %}
+<div>
+{{e.event_name}}
+<a href='/events/register/{{e.event_name}}'>Register</a>
+</div>
+
+{% endfor %}

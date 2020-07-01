@@ -1,14 +1,13 @@
 from django.shortcuts import render,HttpResponse
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
-from users.models import Events,Users
+from users.models import Events,Users,Register
 from azure.storage.blob import BlockBlobService 
 from PicProcure.custom_azure import AzureMediaStorage
 import sys
 import time
 import os
 import dlib
-import glob
 import cv2
 from PIL import Image
 import subprocess as sbp
@@ -30,6 +29,7 @@ import zipfile
 import requests
 from django.http import StreamingHttpResponse, HttpResponse
 from io import StringIO,BytesIO
+from PicProcure.custom_azure import AzureMediaStorage
 def stream_file(request):
     file_url = "https://picprocurestorageaccount.blob.core.windows.net/felicific-dada1/dada1.jpg"
     r = requests.get(file_url,stream=True)
@@ -62,12 +62,30 @@ def new_event(request):
         event.event_name = request.POST.get('event_name','')
         event.description = request.POST.get('description','')
         event.creation_date = datetime.now()
+        event.creation_time = datetime.now()
+        img = request.FILES.get('event_image')
+        event.event_image = event.event_name + '.jpg'
+        #md = AzureMediaStorage()
+        #md.azure_container = 'Event-Images'
+        #md._save(event.event_image,img)
         event.event_owner = user
         event.save()
         return HttpResponse(event)
-        
-
     return render(request,'events/new-event.html')
+
+
+def register(request,eventname):
+    register = Register()
+    register.event_id = Events.objects.get(event_name = eventname)
+    register.user_id = Users.objects.get(user_name = request.session['user_name'])
+    register.save()
+    return HttpResponse('registered')  
+
+def viewEvents(request):
+    events = Events.objects.all().exclude(event_owner = Users.objects.get(user_name = request.session['user_name']))
+    return render(request,'events/view-events.html',{'events':events})
+
+
 
 
 
