@@ -76,6 +76,6 @@ def logout(request):
 def feedback(request):
     user=Users.objects.get(user_name=request.session['user_name'])
     body=request.POST.get('description','')
-    email = EmailMessage("Here is my Feedback:  ",body,user.email_id, to=[settings.EMAIL_HOST_USER] )
+    email = EmailMessage("Here is my Feedback:",body,str(user.email_id), to=[settings.EMAIL_HOST_USER] )
     email.send()
     return (request,"send")
