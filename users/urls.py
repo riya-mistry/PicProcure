@@ -5,4 +5,5 @@ urlpatterns = [
     path('login', views.login, name="login"),
     path('logout', views.logout, name="logout"),
     path('auth',views.auth_view,name="auth"),
+    path('feedback',views.feedback,),
 ]
