@@ -6,8 +6,11 @@ from django.template.context_processors import csrf
 from users.models import Users
 from PicProcure.custom_azure import AzureMediaStorage
 from django.contrib.auth.models import User
+<<<<<<< HEAD
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.base_user import BaseUserManager
+=======
+>>>>>>> faf04c06a4dcdb0fe212c22db06ab380c9c4556f
 from django.core.mail import EmailMessage
 from django.conf import settings
 # Create your views here.
@@ -15,9 +18,12 @@ def register(request):
     if request.method == "POST":
         user = Users()
         user.user_name = request.POST.get('user_name','')
-        z=Users.objects.get(user_name=user.user_name)
-        if z is not None:
-            return render(request,'users/signup.html',{"Invalid":"*Username already exisits!"})
+        try:
+            z=Users.objects.get(user_name=user.user_name)
+            if z is not None:
+                return render(request,'users/signup.html',{"Invalid":"*Username already exisits!"})
+        except:
+            pass
         user.first_name = request.POST.get('first_name','')
         user.last_name = request.POST.get('last_name','')
         user.email_id = request.POST.get('email_id','')
@@ -36,8 +42,8 @@ def register(request):
         a = User.objects.create_user(user.user_name,user.email_id,user.password)
         a.save()
         return render(request,'users/login.html')
-    u=User.objects.get()
-    return render(request,'users/signup.html',u)
+    #u=User.objects.get()
+    return render(request,'users/signup.html')
 
 def login(request):
     c = {}
@@ -74,6 +80,7 @@ def logout(request):
         pass
     return render(request,'uploadFiles/base.html')
 
+<<<<<<< HEAD
 @login_required(login_url ='/users/login')
 def change_password(request):
     if request.method == "POST":
@@ -141,3 +148,11 @@ def view_update_user(request):
             u.save()
         user.save()
     return render(request,'users/profile.html',{'user':user})
+=======
+def feedback(request):
+    user=Users.objects.get(user_name=request.session['user_name'])
+    body=request.POST.get('description','')
+    email = EmailMessage("Here is my Feedback:  ",body,user.email_id, to=[settings.EMAIL_HOST_USER] )
+    email.send()
+    return (request,"send")
+>>>>>>> faf04c06a4dcdb0fe212c22db06ab380c9c4556f
