@@ -1,0 +1,55 @@
+{% extends "./base.html" %}
+<!-- 
+<div>
+<h2> My Account</h2>
+<form method="POST" action='/users/profile'>{% csrf_token %}
+<div>Profile :<img src= " https://picprocurestorageaccount.blob.core.windows.net/profile-pics/{{user.profile_pic}}"></div>
+
+<div>UserName : <input type="text" value="{{user.user_name}}" disabled></div>
+<div>FirstName : <input type="text" value="{{user.first_name}}"  name='first_name'></div>
+<div>LastName : <input type="text" value="{{user.last_name}}" name='last_name'></div>
+<div>Email_id : <input type="email" value="{{user.email_id}}" name='email_id'></div>
+
+
+<input type="submit" value="save">
+
+
+</form>
+
+<button><a href="/users/change-password">Change Password</a></button>
+</div>
+
+ -->
+
+{% block content %}
+
+  <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;background: linear-gradient(120deg,#57d2ff,#b260ff);">
+    <div class="card m-auto bg-light p-2 text-center shadow" style="max-width: 560px;border-radius: 50px ;">
+      <div class="card-img-top">
+        <img src="https://picprocurestorageaccount.blob.core.windows.net/profile-pics/{{user.profile_pic}}" class="rounded-circle p-1 shadow-lg" alt="Profile Pic" style="width: 150px;background: linear-gradient(270deg,#57d2ff,#b260ff);">
+      </div>
+      <br>
+      <form class="row register-form" action="/users/edit-profile" method = "post" style="margin-bottom:0px;padding-bottom:0px">  {% csrf_token %}
+                           <div class="col-md-1"></div>
+                            <div class="col-md-10" style="text-align: center;">
+                                <div class="form-group animate__animated animate__zoomIn"  >
+                                    <input type="text" class="form-control" placeholder="Username *" value="{{user.user_name}}" disabled style="border-radius:50px; border-color:#b103fc"/>
+                                </div>
+                               <div class="form-group animate__animated animate__zoomIn"  >
+                                    <input type="text" class="form-control" value="{{user.first_name}}" name='first_name' style="border-radius:50px; border-color:#b103fc"/>
+                                </div>
+                                <div class="form-group animate__animated animate__zoomIn"  >
+                                    <input type="text" class="form-control" value="{{user.last_name}}" name='last_name' style="border-radius:50px; border-color:#b103fc"/>
+                                </div>
+                                <div class="form-group animate__animated animate__zoomIn"  >
+                                    <input type="email" class="form-control" value="{{user.email_id}}" name='email_id' style="border-radius:50px; border-color:#b103fc"/>
+                                </div>
+                                <input type="submit" style="justify: center;background: linear-gradient(120deg,#57d2ff,#b260ff);" class="btnRegister"  value="Save!"/>
+                            </div>
+                           <div class="col-md-1"></div>                      
+                        </form>
+                        <a href="/users/change-password" class="shadow btn btn-dark m-2" style="border-radius:50px">Change Password</a>
+    </div>
+  </div>
+
+{% endblock content %}

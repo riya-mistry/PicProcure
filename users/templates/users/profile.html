@@ -1,19 +1,38 @@
+{% extends "./base.html" %}
+{% block content %}
 
-<div>
-<h2> My Account</h2>
-<form method="POST" action='/users/profile'>{% csrf_token %}
-<div>Profile :<img src= " https://picprocurestorageaccount.blob.core.windows.net/profile-pics/{{user.profile_pic}}"></div>
+  <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;background: linear-gradient(120deg,#57d2ff,#b260ff);">
+    <div class="card m-auto bg-light p-2 text-center shadow" style="max-width: 560px;border-radius: 50px ;">
+      <div class="card-img-top">
+        <img src="https://picprocurestorageaccount.blob.core.windows.net/profile-pics/{{user.profile_pic}}.jpg" class="rounded-circle p-1 shadow-lg" alt="Profile Pic" style="width: 150px;height:150px;background: linear-gradient(270deg,#57d2ff,#b260ff);">
+      </div>
+      <div class="card-body d-flex flex-column ">
+        <h5 class="card-title">{{user.user_name}}</h5>
+        <div class="d-flex justify-content-around align-items-center">
+           <!-- <div class="d-flex justify-content-center align-items-center m-1"><small class="mx-1">total events created:</small>
+            <h5>{{count}}</h5>
+          </div> -->
+          
+        </div> 
+        <div class="d-flex justify-content-center align-items-center">
+          <a href="" class="shadow btn btn-primary m-2" style="border-radius:50px">My Events</a>
+          <a href="/users/edit-profile" class="shadow btn btn-dark m-2" style="border-radius:50px">Edit<i class="fa fa-edit ml-2"></i></a>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+            <p style="font-weight:bold">First Name</p>
+            <p style="font-weight:bold">Last Name</p>
+            <p style="font-weight:bold">Email</p>
+            </div>
+            <div class="col-md-6">
+            <p>{{user.first_name}}</p>
+            <p> {{user.last_name}}</p>
+            <p>{{user.email_id}}</p>
+            </div>
+        </div>
 
-<div>UserName : <input type="text" value="{{user.user_name}}" disabled></div>
-<div>FirstName : <input type="text" value="{{user.first_name}}"  name='first_name'></div>
-<div>LastName : <input type="text" value="{{user.last_name}}" name='last_name'></div>
-<div>Email_id : <input type="email" value="{{user.email_id}}" name='email_id'></div>
+      </div>
+    </div>
+  </div>
 
-
-<input type="submit" value="save">
-
-
-</form>
-
-<button><a href="/users/change-password">Change Password</a></button>
-</div>
+{% endblock content %}

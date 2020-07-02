@@ -210,7 +210,8 @@ def cluster(request,eventname):
            # md._save(name,img)
             if 0 == k:
                 output_list.append("ouput/output"+str(i)+"/face_0"+"_"+str(i)+".jpg")
-            block_blob_service.delete_container(eventname)
+        
+        
 
     for imgs in check_folder:
     
@@ -225,5 +226,5 @@ def cluster(request,eventname):
                 output_folder.remove(output)
                 break
 
-
+    block_blob_service.delete_container(eventname)
     return HttpResponse("Succuessfull")

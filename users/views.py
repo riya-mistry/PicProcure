@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.template.context_processors import csrf 
-from users.models import Users
+from users.models import Users,Events
 from PicProcure.custom_azure import AzureMediaStorage
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -60,7 +60,7 @@ def auth_view(request):
             print(user)
             request.session['user_name'] = user.username
             #return HttpResponse('logged in')
-            return render(request,'uploadFiles/base.html', {"full_name": request.session['user_name']})
+            return redirect()
 
         else:
             return render(request,'users/login.html', {"Invalid_msg": "Invalid Username or Password"})
@@ -129,6 +129,14 @@ def reset_password(request):
             return render(request,'users/reset-password.html',{'status':"Access Code Incorrect or expired"})
 
 
+@login_required(login_url ='/users/login')
+def view_profile(request):
+    user=Users.objects.get(user_name=request.session['user_name'])
+    print(user.profile_pic)
+    #count=Events.objects.get(event_owner=user.user_id).count()
+    return render(request,'users/profile.html',{'user':user})
+
+@login_required(login_url ='/users/login')
 def view_update_user(request):
     user = Users.objects.get(user_name=request.session['user_name'])
     if request.method == "POST":
@@ -145,7 +153,9 @@ def view_update_user(request):
             u.email = email_id
             u.save()
         user.save()
-    return render(request,'users/profile.html',{'user':user})
+        return render(request,'users/profile.html',{'user':user})
+    return render(request,'users/edit-profile.html',{'user':user})
+    
 def feedback(request):
     if request.method == "POST":
         user=Users.objects.get(user_name=request.session['user_name'])
