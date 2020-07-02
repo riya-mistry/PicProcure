@@ -1,0 +1,19 @@
+
+<div>
+<h2> My Account</h2>
+<form method="POST" action='/users/profile'>{% csrf_token %}
+<div>Profile :<img src= " https://picprocurestorageaccount.blob.core.windows.net/profile-pics/{{user.profile_pic}}"></div>
+
+<div>UserName : <input type="text" value="{{user.user_name}}" disabled></div>
+<div>FirstName : <input type="text" value="{{user.first_name}}"  name='first_name'></div>
+<div>LastName : <input type="text" value="{{user.last_name}}" name='last_name'></div>
+<div>Email_id : <input type="email" value="{{user.email_id}}" name='email_id'></div>
+
+
+<input type="submit" value="save">
+
+
+</form>
+
+<button><a href="/users/change-password">Change Password</a></button>
+</div>
