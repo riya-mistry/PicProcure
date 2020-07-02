@@ -7,4 +7,6 @@ urlpatterns = [
     path('download-img/<slug:eventname>/<str:blobname>',views.stream_file),
     path('register/<slug:eventname>/',views.register),
     path('view-events',views.viewEvents),
+    path('my-events',views.my_events),
+   
 ]

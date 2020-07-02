@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.base_user import BaseUserManager
 from django.core.mail import EmailMessage
 from django.conf import settings
+from uploadFiles.views import home
 # Create your views here.
 def register(request):
     if request.method == "POST":
@@ -60,12 +61,13 @@ def auth_view(request):
             print(user)
             request.session['user_name'] = user.username
             #return HttpResponse('logged in')
-            return redirect()
+            return render(request,'uploadFiles/base.html')
 
         else:
             return render(request,'users/login.html', {"Invalid_msg": "Invalid Username or Password"})
     except:
         return render(request,'users/login.html', {"Invalid_msg": "Invalid Username or Password"})
+
 
 def logout(request):
 
@@ -155,7 +157,7 @@ def view_update_user(request):
         user.save()
         return render(request,'users/profile.html',{'user':user})
     return render(request,'users/edit-profile.html',{'user':user})
-    
+
 def feedback(request):
     if request.method == "POST":
         user=Users.objects.get(user_name=request.session['user_name'])

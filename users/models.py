@@ -21,6 +21,7 @@ class Events(models.Model):
     creation_date = models.DateField(auto_now=True)
     creation_time = models.TimeField(auto_now=True)
     event_image = models.ImageField(upload_to=None)
+    privacy = models.BooleanField(default=False)
 
     
 class Register(models.Model):

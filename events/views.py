@@ -30,13 +30,15 @@ import requests
 from django.http import StreamingHttpResponse, HttpResponse
 from io import StringIO,BytesIO
 from PicProcure.custom_azure import AzureMediaStorage
+from PicProcure import settings
 def stream_file(request,eventname,blobname):
     print(eventname,blobname)
-    file_url = "https://picprocurestorageaccount.blob.core.windows.net/"+ eventname +'/'+ blobname 
+    file_url = settings.MEDIA_URL + eventname + '/' + blobname
+    #file_url = "https://picprocurestorageaccount.blob.core.windows.net/"+ eventname +'/'+ blobname 
     print(file_url)
     r = requests.get(file_url,stream=True)
     resp = StreamingHttpResponse(streaming_content=r)
-    resp['Content-Disposition'] = 'attachment; filename="img.jpg"'
+    resp['Content-Disposition'] = 'attachment; filename="'+ blobname +'"'
     return resp
 
 def combine(request,eventname):
@@ -55,7 +57,7 @@ def combine(request,eventname):
     zf.close()
     resp = HttpResponse(byte.getvalue(), content_type= "application/x-zip-compressed")
     foldername = foldername +'.zip'
-    resp['Content-Disposition'] = 'attachment; filename=dowmload.zip' 
+    resp['Content-Disposition'] = 'attachment; filename=' +foldername 
     return resp
 
 @login_required(login_url='/users/login')
@@ -86,9 +88,13 @@ def new_event(request):
 
 
 def register(request,eventname):
+    event = Events.objects.get(event_name = eventname)
+    user = Users.objects.get(user_name = request.session['user_name'])
+    if Register.objects.get(event_id= event,user_id = user) is not None:
+        return HttpResponse("already registered")
     register = Register()
-    register.event_id = Events.objects.get(event_name = eventname)
-    register.user_id = Users.objects.get(user_name = request.session['user_name'])
+    register.event_id = event
+    register.user_id = user
     register.save()
     return HttpResponse('registered')  
 
@@ -96,10 +102,25 @@ def viewEvents(request):
     events = Events.objects.all().exclude(event_owner = Users.objects.get(user_name = request.session['user_name']))
     return render(request,'events/view-events.html',{'events':events})
 
+def my_events(request):
+    events = Events.objects.all().filter(event_owner = Users.objects.get(user_name = request.session['user_name']))
+    register = {}
+    for e in events:
+        register[e.event_name] =  Register.objects.all().filter(event_id = e)
+    print(register)
+    return render(request,'events/my-events.html',{'events':events,'register': register})
 
-
-
-
+"""def registered(request,eventname):
+    event = Events.objects.get(event_name = eventname)
+    if event.event_owner != Users.objects.get(user_name = request.session['user_name']):
+        return HttpResponse("Sorry you aren't authorised to view this page")
+    else:
+        registered = Register.objects.all().filter(event_id = event)
+        #users = []
+        #for r in registered:
+            #users.append(Users.objects.get(user_id = r.user_id))
+        #return HttpResponse(json.dumps(users),content_type="application/json")
+        return render(request,'events/registered.html',{"register": registered})"""
 
 def cluster(request,eventname):
     start = time.time()
@@ -228,3 +249,4 @@ def cluster(request,eventname):
 
     block_blob_service.delete_container(eventname)
     return HttpResponse("Succuessfull")
+
