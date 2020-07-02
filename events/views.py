@@ -30,27 +30,32 @@ import requests
 from django.http import StreamingHttpResponse, HttpResponse
 from io import StringIO,BytesIO
 from PicProcure.custom_azure import AzureMediaStorage
-def stream_file(request):
-    file_url = "https://picprocurestorageaccount.blob.core.windows.net/felicific-dada1/dada1.jpg"
+def stream_file(request,eventname,blobname):
+    print(eventname,blobname)
+    file_url = "https://picprocurestorageaccount.blob.core.windows.net/"+ eventname +'/'+ blobname 
+    print(file_url)
     r = requests.get(file_url,stream=True)
     resp = StreamingHttpResponse(streaming_content=r)
-    resp['Content-Disposition'] = 'attachment; filename="dada1.jpg"'
+    resp['Content-Disposition'] = 'attachment; filename="img.jpg"'
     return resp
 
-def combine(request):
+def combine(request,eventname):
     #download
+    #user_name = request.session['user_name']
+    user_name = 'dada10'
+    foldername = eventname +'-'+ user_name
     md= AzureMediaStorage()
     byte = BytesIO()
     block_blob_service  = BlockBlobService(account_name=md.account_name,account_key=md.account_key)
-    generator = block_blob_service.list_blobs('felicific-vin1')
+    generator = block_blob_service.list_blobs(foldername)
     zf = zipfile.ZipFile( byte,mode='w',compression=zipfile.ZIP_DEFLATED)
     for blob in generator:
-        b = block_blob_service.get_blob_to_bytes('felicific-vin1', blob.name)
+        b = block_blob_service.get_blob_to_bytes(foldername, blob.name)
         zf.writestr(blob.name, b.content)
     zf.close()
     resp = HttpResponse(byte.getvalue(), content_type= "application/x-zip-compressed")
-
-    resp['Content-Disposition'] = 'attachment; filename="felicific-vin1.zip"' 
+    foldername = foldername +'.zip'
+    resp['Content-Disposition'] = 'attachment; filename=dowmload.zip' 
     return resp
 
 @login_required(login_url='/users/login')
@@ -65,11 +70,17 @@ def new_event(request):
         event.creation_time = datetime.now()
         img = request.FILES.get('event_image')
         event.event_image = event.event_name + '.jpg'
-        #md = AzureMediaStorage()
+        md = AzureMediaStorage()
         #md.azure_container = 'Event-Images'
         #md._save(event.event_image,img)
         event.event_owner = user
         event.save()
+        md.azure_container = event.event_name
+        block_blob_service = BlockBlobService(account_name=md.account_name, account_key=md.account_key)
+        try:
+            blob_containter = block_blob_service.create_container(md.azure_container,public_access='Blob') 
+        except:
+            pass
         return HttpResponse(event)
     return render(request,'events/new-event.html')
 
@@ -90,7 +101,7 @@ def viewEvents(request):
 
 
 
-def cluster(request):
+def cluster(request,eventname):
     start = time.time()
     md = AzureMediaStorage()
     block_blob_service = BlockBlobService(account_name=md.account_name,account_key=md.account_key)
@@ -99,11 +110,14 @@ def cluster(request):
     predictor_path = 'C:/Users/lenovo/Desktop/PicProcure/events/shape_predictor_5_face_landmarks.dat'
     face_rec_model_path = 'C:/Users/lenovo/Desktop/PicProcure/events/dlib_face_recognition_resnet_model_v1.dat'
 
-    faces_folder_path = block_blob_service.list_blobs(container_name='felicific')
+    faces_folder_path = block_blob_service.list_blobs(container_name=eventname)
     output_folder = []
     check_folder = block_blob_service.list_blobs(container_name='profile-pics')
-
+    #user_list = Register.objects.get(event_id= Events.objects.get(event_name= eventname)).filter(user_id)
     username_list = []
+    #for user in user_list:
+        #img = Users.objects.get(user_id = user).filter(profile_pic)
+        #username_list.append(img)
     for f in check_folder:
         username_list.append(f.name)
     print(username_list)
@@ -141,7 +155,7 @@ def cluster(request):
     print('profile pics ended')    
     for f in faces_folder_path:
         print("Processing file: {}".format(f.name))
-        url = "https://picprocurestorageaccount.blob.core.windows.net/felicific/"+ f.name
+        url = "https://picprocurestorageaccount.blob.core.windows.net/"+eventname+'/'+ f.name
         #img = dlib.load_rgb_image(f)
         #win = dlib.image_window()
         img = numpy.array(Image.open(io.BytesIO(urllib.request.urlopen(url).read())))
@@ -158,7 +172,7 @@ def cluster(request):
         # Compute the 128D vector that describes the face in img identified by shape.  
             face_descriptor = facerec.compute_face_descriptor(img, shape)
             descriptors.append(face_descriptor)
-            images.append(('felicific',f.name,img, shape))
+            images.append((eventname,f.name,img, shape))
             print('image appended ' + f.name)
 
         # Cluster the faces.  
@@ -196,12 +210,13 @@ def cluster(request):
            # md._save(name,img)
             if 0 == k:
                 output_list.append("ouput/output"+str(i)+"/face_0"+"_"+str(i)+".jpg")
+            block_blob_service.delete_container(eventname)
 
     for imgs in check_folder:
     
         for output in output_folder:
             if block_blob_service.get_blob_metadata(container_name=output,blob_name=imgs.name) is not None:
-                container_name = 'felicific-' + imgs.name.split('.')[0]
+                container_name = eventname+'-' + imgs.name.split('.')[0]
                 block_blob_service.create_container(container_name=container_name,public_access='blob')
                 for i in block_blob_service.list_blobs(container_name=output):
                     url =  url = "https://picprocurestorageaccount.blob.core.windows.net/" + output + '/'+i.name

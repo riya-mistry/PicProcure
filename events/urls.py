@@ -2,9 +2,9 @@ from django.urls import path
 from . import views
 urlpatterns = [
     path('generate-event',views.new_event),
-    path('demo',views.combine),
-    path('cluster',views.cluster),
-    path('download',views.stream_file),
+    path('download-zip/<slug:eventname>/',views.combine),
+    path('cluster/<slug:eventname>/',views.cluster),
+    path('download-img/<slug:eventname>/<str:blobname>',views.stream_file),
     path('register/<slug:eventname>/',views.register),
     path('view-events',views.viewEvents),
 ]
