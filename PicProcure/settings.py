@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import pyodbc
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -77,16 +78,33 @@ WSGI_APPLICATION = 'PicProcure.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'PicProcure',
+        'NAME': 'PicProcure2',
         'USER':'root',
         'PASSWORD':'',
         'HOST': 'localhost',
         'PORT':'3306',
     }
+}"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'PicProcureDB',
+        'USER': 'server',
+        'PASSWORD': 'PicProcure123',
+        'HOST': 'picprocureserver.database.windows.net',
+        'PORT': '',
+
+        'OPTIONS': {
+            'driver': 'SQL Server Native Client 11.0',
+        },
+    },
 }
+
+# set this to False if you want to turn off pyodbc's connection pooling
+#DATABASE_CONNECTION_POOLING = False
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True

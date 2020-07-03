@@ -30,10 +30,10 @@ def register(request):
         if user.password == repassword:
             file = request.FILES.get('profile_pic')
             user.profile_pic = user.user_name + '.jpg'
-            #md = AzureMediaStorage()
+            md = AzureMediaStorage()
             #md.location= "Profile_Pics"
-            #md.azure_container = 'profile-pics'
-            #pp = md._save(user.user_name +'.jpg',file)
+            md.azure_container = 'profile-pics'
+            pp = md._save(user.user_name +'.jpg',file)
         else:
             return render(request,'users/signup.html',{"Invalid":"*password and Confirm-password dose not match"})
         user.save()
