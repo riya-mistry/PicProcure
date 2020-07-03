@@ -164,3 +164,17 @@ def feedback(request):
         email = EmailMessage("Here is my Feedback:  " ,body,settings.EMAIL_HOST_USER, to=[settings.EMAIL_HOST_USER] )
         email.send()
     return render(request,'uploadFiles/base.html',{"send":"send"})
+
+def delete_user(request):
+    users = Users.objects.get(user_name= request.session['user_name'])
+    user = User.objects.get(username= request.session['user_name'])
+    md= AzureMediaStorage()
+    md.azure_container = 'profile-pics'
+    md.delete(str(users.profile_pic))
+    users.delete()
+    user.delete()
+    try:
+        del request.session['user_name']
+    except KeyError:
+        pass
+    return redirect(home)

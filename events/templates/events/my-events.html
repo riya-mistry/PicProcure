@@ -13,6 +13,7 @@
 {% if key == e.event_name %}
  {%for v in values%}
 {{v.user_id.user_name}}
+<a href='/events/remove-user/{{e.event_name}}/{{v.user_id.user_id}}'>Remove user</a>
 
 {%endfor%}
 {% endif %}

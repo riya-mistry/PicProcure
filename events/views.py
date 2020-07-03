@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
 from users.models import Events,Users,Register
@@ -89,8 +89,11 @@ def new_event(request):
 def register(request,eventname):
     event = Events.objects.get(event_name = eventname)
     user = Users.objects.get(user_name = request.session['user_name'])
-    if Register.objects.get(event_id= event,user_id = user) is not None:
-        return HttpResponse("already registered")
+    try:
+        if Register.objects.get(event_id= event,user_id = user) is not None:
+            return HttpResponse("already registered")
+    except:
+        pass
     register = Register()
     register.event_id = event
     register.user_id = user
@@ -109,18 +112,12 @@ def my_events(request):
     print(register)
     return render(request,'events/my-events.html',{'events':events,'register': register})
 
-"""def registered(request,eventname):
-    event = Events.objects.get(event_name = eventname)
-    if event.event_owner != Users.objects.get(user_name = request.session['user_name']):
-        return HttpResponse("Sorry you aren't authorised to view this page")
-    else:
-        registered = Register.objects.all().filter(event_id = event)
-        #users = []
-        #for r in registered:
-            #users.append(Users.objects.get(user_id = r.user_id))
-        #return HttpResponse(json.dumps(users),content_type="application/json")
-        return render(request,'events/registered.html',{"register": registered})"""
-
+def remove_user(request,eventname,user_id):
+    user = Users.objects.get(user_id=user_id)
+    event = Events.objects.get(event_name= eventname)
+    register = Register.objects.get(user_id=user,event_id=event)
+    register.delete()
+    return redirect(my_events)
 def cluster(request,eventname):
     start = time.time()
     md = AzureMediaStorage()

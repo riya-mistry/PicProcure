@@ -8,5 +8,6 @@ urlpatterns = [
     path('register/<slug:eventname>/',views.register),
     path('view-events',views.viewEvents),
     path('my-events',views.my_events),
+    path('remove-user/<slug:eventname>/<str:user_id>',views.remove_user),
    
 ]

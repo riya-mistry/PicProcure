@@ -11,4 +11,5 @@ urlpatterns = [
     path('edit-profile',views.view_update_user),
     path('profile',views.view_profile),
     path('feedback',views.feedback),
+    path('delete-account',views.delete_user),
 ]
