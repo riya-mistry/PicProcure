@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 from django.contrib import auth
@@ -60,8 +60,8 @@ def auth_view(request):
             auth.login(request,x)
             print(user)
             request.session['user_name'] = user.username
-            #return HttpResponse('logged in')
-            return render(request,'uploadFiles/base.html')
+            return redirect(home)
+            #return render(request,'uploadFiles/base.html')
 
         else:
             return render(request,'users/login.html', {"Invalid_msg": "Invalid Username or Password"})
@@ -73,11 +73,10 @@ def logout(request):
 
     auth.logout(request)
     try:
-        #request.session.remove('user_name')
         del request.session['user_name']
     except KeyError:
         pass
-    return render(request,'uploadFiles/base.html')
+    return redirect(home)
 
 @login_required(login_url ='/users/login')
 def change_password(request):

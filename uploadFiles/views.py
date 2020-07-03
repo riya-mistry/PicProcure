@@ -5,8 +5,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from azure.storage.blob import BlockBlobService 
 from users.models import Events,Users
-
-
+import pytz
 # Create your views here.
 @login_required(login_url ='/users/login')
 def home(request):
@@ -27,8 +26,11 @@ def fileupload(request,eventname):
             print (myfile)
             md._save(myfile.name,myfile)
         return render(request, 'uploadFiles/demoupload.html', {'uploaded_file_url': 'uploaded successfully'})
-    
-    test = datetime.now().minute < event.creation_time.minute + 1
+    current_time = datetime.now(pytz.utc)
+    print(current_time)
+    date = event.creation_date_time
+    print(date)
+    test =( current_time <  date + timedelta(hours = 2))
     return render(request, 'uploadFiles/demoupload.html',{"test":test})
 
 @login_required(login_url ='/users/login')

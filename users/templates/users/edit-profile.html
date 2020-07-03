@@ -26,7 +26,7 @@
   <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;background: linear-gradient(120deg,#57d2ff,#b260ff);">
     <div class="card m-auto bg-light p-2 text-center shadow" style="max-width: 560px;border-radius: 50px ;">
       <div class="card-img-top">
-        <img src="https://picprocurestorageaccount.blob.core.windows.net/profile-pics/{{user.profile_pic}}" class="rounded-circle p-1 shadow-lg" alt="Profile Pic" style="width: 150px;background: linear-gradient(270deg,#57d2ff,#b260ff);">
+        <img src="https://picprocurestorageaccount.blob.core.windows.net/profile-pics/{{user.profile_pic}}" class="rounded-circle p-1 shadow-lg" alt="Profile Pic" style="width: 150px;height:150px;background: linear-gradient(270deg,#57d2ff,#b260ff);">
       </div>
       <br>
       <form class="row register-form" action="/users/edit-profile" method = "post" style="margin-bottom:0px;padding-bottom:0px">  {% csrf_token %}

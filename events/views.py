@@ -68,8 +68,7 @@ def new_event(request):
         event = Events()
         event.event_name = request.POST.get('event_name','')
         event.description = request.POST.get('description','')
-        event.creation_date = datetime.now()
-        event.creation_time = datetime.now()
+        event.creation_date_time = datetime.now()
         img = request.FILES.get('event_image')
         event.event_image = event.event_name + '.jpg'
         md = AzureMediaStorage()

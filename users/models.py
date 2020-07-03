@@ -18,8 +18,7 @@ class Events(models.Model):
     event_owner = models.ForeignKey(Users,on_delete=models.CASCADE)
     event_name = models.CharField(max_length=20,unique=True,null=False)
     description = models.CharField(max_length=100)
-    creation_date = models.DateField(auto_now=True)
-    creation_time = models.TimeField(auto_now=True)
+    creation_date_time = models.DateTimeField(auto_now=True)
     event_image = models.ImageField(upload_to=None)
     
     
