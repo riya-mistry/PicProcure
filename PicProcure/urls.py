@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/',include('users.urls')),
     path('events/',include('events.urls')),
+    path('',include('uploadFiles.urls')),
     
     # path('',views.home),
 ]
