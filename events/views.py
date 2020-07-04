@@ -8,7 +8,7 @@ import sys
 import time
 import os
 #import dlib
-import cv2
+#import cv2
 from PIL import Image
 import subprocess as sbp
 from PIL import ImageChops,Image
