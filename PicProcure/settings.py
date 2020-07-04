@@ -26,7 +26,7 @@ SECRET_KEY = 'eltc&$to4ee@=nmz(rv(l%ijo0zd+r-bpsrl(i&1h-+@xls@w$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -98,7 +98,7 @@ DATABASES = {
         'PORT': '',
 
         'OPTIONS': {
-            'driver': 'SQL Server Native Client 11.0',
+            'driver': "ODBC Driver 13 for SQL Server",
         },
     },
 }
