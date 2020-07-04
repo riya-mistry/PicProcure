@@ -7,7 +7,7 @@ from PicProcure.custom_azure import AzureMediaStorage
 import sys
 import time
 import os
-import dlib
+#import dlib
 import cv2
 from PIL import Image
 import subprocess as sbp
@@ -118,7 +118,7 @@ def remove_user(request,eventname,user_id):
     register = Register.objects.get(user_id=user,event_id=event)
     register.delete()
     return redirect(my_events)
-def cluster(request,eventname):
+"""def cluster(request,eventname):
     start = time.time()
     md = AzureMediaStorage()
     #block_blob_service = BlockBlobService(account_name=md.account_name,account_key=md.account_key)
@@ -244,5 +244,5 @@ def cluster(request,eventname):
                 break
 
     block_blob_service.delete_container(eventname)
-    return HttpResponse("Succuessfull")
+    return HttpResponse("Succuessfull")"""
 

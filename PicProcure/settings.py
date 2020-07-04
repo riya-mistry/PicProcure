@@ -153,14 +153,14 @@ STATICFILES_DIRS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
-#STATICFILES_STORAGE = 'PicProcure.custom_azure.AzureMediaStorage'
-#STATIC_LOCATION = "static"
+STATICFILES_STORAGE = 'PicProcure.custom_azure.AzureMediaStorage'
+STATIC_LOCATION = "static"
 
 
 AZURE_ACCOUNT_NAME = "picprocurestorageaccount"
 AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
 MEDIA_LOCATION = "media"
-STATIC_URL = '/static/'
+STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/media/'
 MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/'
 
 MEDIA_ROOT='http://{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
