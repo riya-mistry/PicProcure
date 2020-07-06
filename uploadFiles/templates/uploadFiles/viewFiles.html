@@ -1,10 +1,20 @@
+{% extends "./base.html" %}
+{% block content %}
 <table  >
-    <a href='/events/download-zip/{{event}}'>Download all</a>
-    <tbody id="myTable">
-        {%for image in images%}
+  <div style="text-align:center">
+    <a href='/events/download-zip/{{event}}' class="shadow btn btn-dark m-2" >Download all</a>
+  </div> 
+  <tr>
+    {%for image in images%}
+
+
+      
         <!--<h5>{{image}}</h5>-->
-     <a href="/events/download-img/{{event}}/{{image}}"><img src="https://picprocurestorageaccount.blob.core.windows.net/{{event}}/{{image}}" height="200" width="300">
+    <a href="/events/download-img/{{event}}/{{image}}"><img src="https://picprocurestorageaccount.blob.core.windows.net/{{event}}/{{image}}" height="500" width="500" style="padding: 4px;">
      </a>
-      {% endfor %}
-    </tbody>
+   
+ 
+  {% endfor %}
+  </tr>
   </table>
+  {% endblock content %}

@@ -1,27 +1,88 @@
 
-{% for e in events %}
-<div>
-<h1>{{e.event_name}}</h1>
-<div>  <img src="e.event_image" </div>
-<h6>{{e.description}}</h6>
-<a href='/events/registered/{{e.event_name}}'>View Registered Users</a><br>
+{% extends "./base.html" %}
+{% block content %}
+    <br>
 
-<button data-toggle="collapse" data-target="#demo">View Registered Users</button>
-<div id="demo" class="collapse">
-{%for key,values in register.items%}
+    {% for e in events %}
+    <p>{{success}}</p>
+    <div class="align-items-center" style="margin-top:30px">
+        <div class="card horizontal p-2 text-center shadow" style="background-color:#eae1f5;width: 70%;margin:auto;border-radius: 20px ;">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card-img">
+                        <img src="https://picprocurestorageaccount.blob.core.windows.net/event-images/{{e.event_image}}" class=" p-1 shadow-lg" alt="Event Images" style="width: 200px;height:200px;background: linear-gradient(270deg,#57d2ff,#b260ff);">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h1 class="card-title text-dark" style="text-align:left;font-family: 'Montserrat Subrayada', sans-serif" >{{e.event_name}}</h1>
+                        <div class="d-flex justify-content-around align-items-center">
+                        <!-- <div class="d-flex justify-content-center align-items-center m-1"><small class="mx-1">total events created:</small>
+                            <h5>{{count}}</h5>
+                        </div> -->
+                        
+                        </div>
+                        <p style="text-align:left">{{e.description}}</p>
+                        
+                        <div style="text-align:right">
+                        <button class="shadow btn btn-dark m-2" data-toggle="collapse" data-target="#demo" style="border-radius:50px">Registerd users</button>
+                        {%for key,values in tests.items%}
 
-{% if key == e.event_name %}
- {%for v in values%}
-{{v.user_id.user_name}}
-<a href='/events/remove-user/{{e.event_name}}/{{v.user_id.user_id}}'>Remove user</a>
+                            {% if key == e.event_name %}
+                            
+                                     <button class="shadow btn btn-primary m-2" data-toggle="collapse" data-target="#upload" style="border-radius:50px" {% if values %} disabled {% endif%}>Upload Files</button>
+                                
+                             {% endif %}
+                         {%endfor%}
+                        <a href='/events/cluster/{{e.event_name}}' class="shadow btn btn-primary m-2">start cluster</a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-{%endfor%}
-{% endif %}
-{%endfor%}
+    <div id="demo" class="collapse" style="background-color:#e1ecf5;width: 70%;margin:auto;border-radius: 20px ;">
+        {%for key,values in register.items%}
 
+            {% if key == e.event_name %}
+                {%for v in values%}
+                    <div class="row">
+                        <div class="col-md-8" style="text-align:left;padding:15px;padding-left:60px;font-weight:bold;">
+                          <div>  {{v.user_id.user_name}}</div>
+                        </div>
+                        <div class="col-md-4" style="text-align:right">
+                            <a href="/events/remove-user/{{e.event_name}}/{{v.user_id.user_id}}" class="shadow btn btn-dark m-2" style="border-radius:50px">Remove user!</a>
+                        </div>
+                   </div>
+                {%endfor%}
+            {% endif %}
+        {%endfor%}
+    </div>    
+    <div id="upload" class="collapse" style="background-color:#e1ecf5;width: 70%;margin:auto;border-radius: 20px ;">
+        {%for key,values in register.items%}
 
-</div>
-<a href='/uploadFiles/upload-files/{{e.event_name}}'>Upload files </a>
-</div>
-
-{% endfor %}
+            {% if key == e.event_name %}
+               
+                    <form method="POST" enctype="multipart/form-data" action="/uploadFiles/upload-files/{{e.event_name}}">{% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-8" style="text-align:left;padding:15px;padding-left:60px;font-weight:bold;">
+                                
+                                <div class="button-wrap files">
+                                    <!-- <input id="upload" type="file" placeholder="Profile Pic" name="profile_pic" id="profile_pic" required accept="image/*"> -->
+                                    <input  id="uploadbtn" type="file" placeholder="Event Images" name="myfile" id="myfile" required accept=".png,.jpg,.jpeg" multiple="">
+                                    <label class ="new-button" for="uploadbtn"> Choose Pic
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="text-align:right">
+                                <input type="submit" class="btnRegister" {% if test %}disabled{%endif%}>Upload</input>
+                            </div>
+                        </div>
+                    </form>
+            
+            {% endif %}
+        {%endfor%}
+    </div>  
+    {% endfor %}
+{% endblock content %}

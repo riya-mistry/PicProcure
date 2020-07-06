@@ -7,8 +7,8 @@ from PicProcure.custom_azure import AzureMediaStorage
 import sys
 import time
 import os
-#import dlib
-#import cv2
+import dlib
+import cv2
 from PIL import Image
 import subprocess as sbp
 from PIL import ImageChops,Image
@@ -31,6 +31,9 @@ from django.http import StreamingHttpResponse, HttpResponse
 from io import StringIO,BytesIO
 from PicProcure.custom_azure import AzureMediaStorage
 from PicProcure import settings
+import pytz
+
+@login_required(login_url ='/users/login')
 def stream_file(request,eventname,blobname):
     print(eventname,blobname)
     file_url = settings.MEDIA_URL + eventname + '/' + blobname
@@ -41,11 +44,12 @@ def stream_file(request,eventname,blobname):
     resp['Content-Disposition'] = 'attachment; filename="'+ blobname +'"'
     return resp
 
+@login_required(login_url ='/users/login')
 def combine(request,eventname):
     #download
-    #user_name = request.session['user_name']
-    user_name = 'dada10'
-    foldername = eventname +'-'+ user_name
+    user_name = request.session['user_name']
+    #user_name = 'dada10'
+    foldername = eventname
     md= AzureMediaStorage()
     byte = BytesIO()
     block_blob_service  = BlockBlobService(account_name=md.account_name,account_key=md.account_key)
@@ -72,8 +76,8 @@ def new_event(request):
         img = request.FILES.get('event_image')
         event.event_image = event.event_name + '.jpg'
         md = AzureMediaStorage()
-        #md.azure_container = 'Event-Images'
-        #md._save(event.event_image,img)
+        md.azure_container = 'event-images'
+        md._save(event.event_name + '.jpg',img)
         event.event_owner = user
         event.save()
         md.azure_container = event.event_name
@@ -82,10 +86,10 @@ def new_event(request):
             blob_containter = block_blob_service.create_container(md.azure_container,public_access='Blob') 
         except:
             pass
-        return HttpResponse(event)
+        return redirect(my_events)
     return render(request,'events/new-event.html')
 
-
+@login_required(login_url ='/users/login')
 def register(request,eventname):
     event = Events.objects.get(event_name = eventname)
     user = Users.objects.get(user_name = request.session['user_name'])
@@ -98,30 +102,46 @@ def register(request,eventname):
     register.event_id = event
     register.user_id = user
     register.save()
-    return HttpResponse('registered')  
+    return redirect(registered) 
 
+@login_required(login_url ='/users/login')
 def viewEvents(request):
     events = Events.objects.all().exclude(event_owner = Users.objects.get(user_name = request.session['user_name']))
     return render(request,'events/view-events.html',{'events':events})
 
+@login_required(login_url ='/users/login')
 def my_events(request):
     events = Events.objects.all().filter(event_owner = Users.objects.get(user_name = request.session['user_name']))
     register = {}
+    tests = {}
+    current_time = datetime.now(pytz.utc)
     for e in events:
         register[e.event_name] =  Register.objects.all().filter(event_id = e)
-    print(register)
-    return render(request,'events/my-events.html',{'events':events,'register': register})
+        date = e.creation_date_time
+        print(date)
+        tests[e.event_name] =( current_time <  date + timedelta(minutes = 2))
+    print(register)   
+    return render(request,'events/my-events.html',{'events':events,'register': register,'tests':tests,'event_uploaded':'abc'})
 
+@login_required(login_url ='/users/login')
 def remove_user(request,eventname,user_id):
     user = Users.objects.get(user_id=user_id)
     event = Events.objects.get(event_name= eventname)
     register = Register.objects.get(user_id=user,event_id=event)
     register.delete()
     return redirect(my_events)
-"""def cluster(request,eventname):
+
+@login_required(login_url ='/users/login')
+def registered(request):
+    user = Users.objects.get(user_name = request.session['user_name'])
+    events = Register.objects.all().filter(user_id = user)
+    return render(request,'events/registered.html',{'events':events})
+
+@login_required(login_url ='/users/login')
+def cluster(request,eventname):
     start = time.time()
     md = AzureMediaStorage()
-    #block_blob_service = BlockBlobService(account_name=md.account_name,account_key=md.account_key)
+    block_blob_service = BlockBlobService(account_name=md.account_name,account_key=md.account_key)
     # Download the pre trained models, unzip them and save them in the save folder as this file
     #
     predictor_path = 'shape_predictor_5_face_landmarks.dat'#'C:/Users/lenovo/Desktop/PicProcure/events/shape_predictor_5_face_landmarks.dat'
@@ -130,14 +150,14 @@ def remove_user(request,eventname,user_id):
     faces_folder_path = block_blob_service.list_blobs(container_name=eventname)
     output_folder = []
     check_folder = block_blob_service.list_blobs(container_name='profile-pics')
-    #user_list = Register.objects.get(event_id= Events.objects.get(event_name= eventname)).filter(user_id)
+    user_list = Register.objects.all().filter(event_id= Events.objects.get(event_name= eventname))
     username_list = []
-    #for user in user_list:
-        #img = Users.objects.get(user_id = user).filter(profile_pic)
-        #username_list.append(img)
-    for f in check_folder:
-        username_list.append(f.name)
-    print(username_list)
+    for user in user_list:
+        img = user.user_id.profile_pic
+        username_list.append(img)
+    #for f in check_folder:
+        #username_list.append(f.name)
+    #print(username_list)
 
     detector = dlib.get_frontal_face_detector() #a detector to find the faces
     sp = dlib.shape_predictor(predictor_path) #shape predictor to find face landmarks
@@ -209,14 +229,14 @@ def remove_user(request,eventname,user_id):
         #output_folder_path = output_folder + '/output' + str(i) # Output folder for each cluster
         #os.path.normpath(output_folder_path)
         #os.makedirs(output_folder_path)
-        block_blob_service.create_container('output'+ str(i),public_access='blob')
+        block_blob_service.create_container(eventname+ str(i),public_access='blob')
         
 
     # Save each face to the respective cluster folder
         print("Saving faces to output folder...")
         #img, shape = images[index]
             #file_path = os.path.join(output_folder_path,"face_"+str(k)+"_"+str(i))
-        md.azure_container = 'output'+ str(i)
+        md.azure_container = eventname+ str(i)
         output_folder.append(md.azure_container)
             
         for k, index in enumerate(indices):
@@ -233,7 +253,8 @@ def remove_user(request,eventname,user_id):
     for imgs in check_folder:
     
         for output in output_folder:
-            if block_blob_service.get_blob_metadata(container_name=output,blob_name=imgs.name) is not None:
+            try:
+                block_blob_service.get_blob_metadata(container_name=output,blob_name=imgs.name)
                 container_name = eventname+'-' + imgs.name.split('.')[0]
                 block_blob_service.create_container(container_name=container_name,public_access='blob')
                 for i in block_blob_service.list_blobs(container_name=output):
@@ -242,7 +263,9 @@ def remove_user(request,eventname,user_id):
                 block_blob_service.delete_container(output)
                 output_folder.remove(output)
                 break
+            except:
+                pass
 
     block_blob_service.delete_container(eventname)
-    return HttpResponse("Succuessfull")"""
+    return HttpResponse("Successfull")
 

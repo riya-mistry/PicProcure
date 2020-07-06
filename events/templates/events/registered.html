@@ -1,0 +1,39 @@
+
+{% extends "./base.html" %}
+{% block content %}
+    <br>
+    <div style="text-align:right;margin-right:20%">
+        <a href="/events/generate-event" class="shadow btn m-2" style="width:50px;background:linear-gradient(270deg,#57d2ff,#b260ff);border-radius:50%"><i class="fa fa-plus fa-2x" ></i></a>
+    </div>
+    {% for e in events %}
+    <div class="align-items-center" style="margin-top:30px">
+        <div class="card horizontal p-2 text-center shadow" style="background-color:#eae1f5;width: 70%;margin:auto;border-radius: 20px ;">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card-img">
+                        <img src="https://picprocurestorageaccount.blob.core.windows.net/event-images/{{e.event_id.event_image}}" class=" p-1 shadow-lg" alt="Event Images" style="width: 200px;height:200px;background: linear-gradient(270deg,#57d2ff,#b260ff);">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h1 class="card-title text-dark" style="text-align:left;font-family: 'Montserrat Subrayada', sans-serif" >{{e.event_id.event_name}}</h1>
+                        <div class="d-flex justify-content-around align-items-center">
+                        <!-- <div class="d-flex justify-content-center align-items-center m-1"><small class="mx-1">total events created:</small>
+                            <h5>{{count}}</h5>
+                        </div> -->
+                        
+                        </div>
+                        <p style="text-align:left">{{e.event_id.description}}</p>
+                        
+                        <div style="text-align:right">
+                        <a href="/uploadFiles/viewfiles/{{e.event_id.event_name}}" class="shadow btn btn-primary m-2" style="border-radius:50px">ViewFiles</a>
+                      
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+{% endblock content %}

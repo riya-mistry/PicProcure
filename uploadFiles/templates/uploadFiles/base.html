@@ -18,7 +18,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     {% load static %}
- 
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
     <!-- use django static tag ton load js file and css file. -->
     <!-- <link rel="stylesheet" href="{% static 'style.css' %}"> -->
     <style>
@@ -369,14 +369,17 @@ ul.social-network li {
         <a class="nav-link" href="/uploadFiles/">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/uploadFiles/upload-files">Upload</a>
+        <a class="nav-link" href="/events/my-events">My-Events</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/uploadFiles/viewfiles">View Uploaded</a>
+        <a class="nav-link" href="/events/view-events">View-Events</a>
       </li>
       
       <li class="nav-item">
-        <a class="nav-link" href="#">About Us</a>
+        <a class="nav-link" href="/events/view-events">Registered-Events</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="">About Us</a>
       </li>
       
     </ul>
@@ -388,14 +391,14 @@ ul.social-network li {
       <a class="nav-link" href="/users/profile">{{user.username}}</a>
       </li>
       <li class="nav-item" >
-        <a class="nav-link" href="../users/logout">logout</a>
+        <a class="nav-link" href="/users/logout">logout</a>
       </li>
     {% else %}
       <li class="nav-item" >
-        <a class="nav-link" href="../users/login">login</a>
+        <a class="nav-link" href="/users/login">login</a>
       </li>
       <li class="nav-item" >
-        <a class="nav-link" href="../users/signup">Sign Up</a>
+        <a class="nav-link" href="/users/signup">Sign Up</a>
       </li>
         <!-- <p>Welcome {{ user.username }}</p>        -->
     {% endif %}

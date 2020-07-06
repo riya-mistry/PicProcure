@@ -1,10 +1,32 @@
-<h1>New Event</h1>
-<form method="POST" action="/events/generate-event">  {% csrf_token %}
-   <div> Name &nbsp;&nbsp;</div>
-   <div> <input type="text" required name="event_name" placeholder="event-name"><br><br></div>
-   <div> Description </div>
-   <div><input type="file" required name="event_image" >
-   </div>
-    <div><textarea name="description" rows="4" cols="120"placeholder='short description of event'></textarea></div>
-    <input type="submit" value="submit">
-</form>
+{% extends "./base.html" %}
+{% block content %}
+<br>
+  <!-- <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;background: linear-gradient(120deg,#57d2ff,#b260ff);"> -->
+    <div class="card m-auto bg-light p-2  shadow" style="max-width: 460px;border-radius: 50px ;">
+      
+      <div class="card-body d-flex flex-column ">
+        <h1 class="card-title text-dark text-center" style="text-align:center;font-family: 'Montserrat Subrayada', sans-serif;" >New Event</h1>
+        <p style="text-align:center;color:red">{{Invalid}}</p>  
+        <form class="row register-form" method="POST" action="/events/generate-event" enctype="multipart/form-data">{% csrf_token %}
+            <div class="col-md-12">
+                <div class="form-group animate__animated animate__zoomIn"  >
+                    <input type="text" class="form-control" placeholder="Event Name *" value="" name='event_name' required minlength=3 maxlength=20 style="border-radius:50px; border-color:#00c6ff"/>
+                </div>
+                <div class="form-group animate__animated animate__zoomIn">
+                    <textarea class="form-control" placeholder="Description *" value="" name='description' required minlength=3 maxlength=100 style="border-radius:20px; border-color:#00c6ff;overflow:auto"></textarea>
+                </div>
+                <div class="button-wrap ">
+                    
+                    <!-- <input id="upload" type="file" placeholder="Profile Pic" name="profile_pic" id="profile_pic" required accept="image/*"> -->
+                    <input id="upload" type="file" placeholder="Event Images" name="event_image" id="event_image" required accept=".png,.jpg,.jpeg">
+                    <label class ="new-button" for="upload"> Choose Pic
+                </div>
+                
+                <input type="submit" class="btnRegister"  value="Create "/>
+            </div>
+        </form>
+      </div>
+    </div>
+  <!-- </div> -->
+
+{% endblock content %}

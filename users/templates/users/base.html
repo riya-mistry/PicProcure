@@ -234,10 +234,14 @@ ul.social-network li {
         <a class="nav-link" href="/uploadFiles/">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/uploadFiles/upload-files">Upload</a>
+        <a class="nav-link" href="/events/my-events">My-Events</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/uploadFiles/viewfiles">View Uploaded</a>
+        <a class="nav-link" href="/events/view-events">View-Events</a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link" href="/events/view-events">Registered-Events</a>
       </li>
       
       <li class="nav-item">
@@ -253,14 +257,14 @@ ul.social-network li {
       <a class="nav-link" href="/users/profile">{{request.session.user_name}}</a>
       </li>
       <li class="nav-item" >
-        <a class="nav-link" href="../users/logout">logout</a>
+        <a class="nav-link" href="/users/logout">logout</a>
       </li>
     {% else %}
       <li class="nav-item" >
-        <a class="nav-link" href="../users/login">login</a>
+        <a class="nav-link" href="/users/login">login</a>
       </li>
       <li class="nav-item" >
-        <a class="nav-link" href="../users/signup">Sign Up</a>
+        <a class="nav-link" href="/users/signup">Sign Up</a>
       </li>
         <!-- <p>Welcome {{ user.username }}</p>        -->
     {% endif %}

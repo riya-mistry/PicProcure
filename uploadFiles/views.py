@@ -7,9 +7,9 @@ from azure.storage.blob import BlockBlobService
 from users.models import Events,Users
 import pytz
 # Create your views here.
-@login_required(login_url ='/users/login')
+
 def home(request):
-    return render(request,'uploadFiles/base.html',{"full_name": request.session['user_name']})
+    return render(request,'uploadFiles/base.html')
 
 @login_required(login_url ='/users/login')
 def fileupload(request,eventname):
@@ -25,7 +25,7 @@ def fileupload(request,eventname):
         for myfile in myfile12:
             print (myfile)
             md._save(myfile.name,myfile)
-        return render(request, 'uploadFiles/demoupload.html', {'uploaded_file_url': 'uploaded successfully'})
+        return render(request, 'events/my-events.html', {'success': 'uploaded successfully','uploaded':False,'event_uploaded':eventname})
     current_time = datetime.now(pytz.utc)
     print(current_time)
     date = event.creation_date_time
@@ -36,13 +36,13 @@ def fileupload(request,eventname):
 @login_required(login_url ='/users/login')
 def viewFiles(request,eventname):
     md = AzureMediaStorage()
-    md.azure_container=eventname
+    md.azure_container=eventname + '-' + request.session['user_name']
     block_blob_service = BlockBlobService(account_name=md.account_name, account_key=md.account_key)
-    files = block_blob_service.list_blobs(eventname)
+    files = block_blob_service.list_blobs(md.azure_container)
     urls = []
     for f in files:
         urls.append(f.name)
-    context = {'images': urls,'event':eventname}
+    context = {'images': urls,'event':md.azure_container}
    
     return render (request,'uploadFiles/viewFiles.html',context=context)
         
@@ -51,7 +51,6 @@ def viewFiles(request,eventname):
 
 def deleteFile(blob_name):
     md = AzureMediaStorage()
-    md.location = 'samyak'
     md.delete(blob_name)
     """blob_service_client = BlobServiceClient.from_connection_string(conn_str)
     container_name = "folder1"

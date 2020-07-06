@@ -1,0 +1,398 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital@1&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    {% load static %}
+ 
+    <!-- use django static tag ton load js file and css file. -->
+    <!-- <link rel="stylesheet" href="{% static 'style.css' %}"> -->
+    <style>
+     .bg-custom-1 {
+        /* background-color: #85144b; */
+        background-color: #5f0f4e;
+      }
+
+      .bg-custom-2 {
+         background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+
+      }
+       .carousel-inner img {
+    width: 100%;
+    height: 80%;
+  }
+      
+.carousel,
+.item,
+.active {
+    height: 100%;
+}
+
+.carousel-inner {
+  height: 100%;
+  background: #000;
+}
+
+.carousel-caption{padding-bottom:80px;}
+
+h2{font-size: 60px;}
+p{padding:10px}
+
+/* Background images are set within the HTML using inline CSS, not here */
+
+.fill {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    opacity:0.6;
+}
+
+/**
+ * Button
+ */
+.btn-transparent {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+.btn-transparent:hover {
+  background-color: #fff;
+}
+
+.btn-rounded {
+  border-radius: 70px;
+}
+
+.btn-large {
+  padding: 11px 45px;
+  font-size: 18px;
+}
+
+/*FOOTER*/
+
+footer {
+  background: #16222A;
+  background: -webkit-linear-gradient(59deg, #3A6073, #16222A);
+  background: linear-gradient(59deg, #3A6073, #16222A);
+  color: white;
+  /* margin-top:100px; */
+  margin-bottom:0px
+}
+
+footer a {
+  color: #fff;
+  font-size: 14px;
+  transition-duration: 0.2s;
+}
+
+footer a:hover {
+  color: #FA944B;
+  text-decoration: none;
+}
+
+.copy {
+  font-size: 12px;
+  padding: 10px;
+  border-top: 1px solid #FFFFFF;
+}
+
+.footer-middle {
+  padding-top: 2em;
+  color: white;
+}
+
+
+/*SOCİAL İCONS*/
+
+/* footer social icons */
+
+ul.social-network {
+  list-style: none;
+  display: inline;
+  margin-left: 0 !important;
+  padding: 0;
+}
+
+ul.social-network li {
+  display: inline;
+  margin: 0 5px;
+}
+
+
+/* footer social icons */
+
+.social-network a.icoFacebook:hover {
+  background-color: #3B5998;
+}
+
+.social-network a.icoLinkedin:hover {
+  background-color: #007bb7;
+}
+
+.social-network a.icoFacebook:hover i,
+.social-network a.icoLinkedin:hover i {
+  color: #fff;
+}
+
+.social-network a.socialIcon:hover,
+.socialHoverClass {
+  color: #44BCDD;
+}
+
+.social-circle li a {
+  display: inline-block;
+  position: relative;
+  margin: 0 auto 0 auto;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+}
+
+.social-circle li i {
+  margin: 0;
+  line-height: 30px;
+  text-align: center;
+}
+
+.social-circle li a:hover i,
+.triggeredHover {
+  -moz-transform: rotate(360deg);
+  -webkit-transform: rotate(360deg);
+  -ms--transform: rotate(360deg);
+  transform: rotate(360deg);
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.social-circle i {
+  color: #595959;
+  -webkit-transition: all 0.8s;
+  -moz-transition: all 0.8s;
+  -o-transition: all 0.8s;
+  -ms-transition: all 0.8s;
+  transition: all 0.8s;
+}
+
+.social-network a {
+  background-color: #F9F9F9;
+}
+.btnRegister{
+    float: right;
+    margin-top: 10%;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    background: #0062cc;
+    color: #fff;
+    font-weight: 600;
+    width: 50%;
+    cursor: pointer;
+}
+.new-button {
+    display: inline-block;
+    padding: 8px 12px; 
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #9c27b0;
+    font-size: 16px;
+    color: #fff;
+    
+}
+input[type="file"] {
+  position: absolute;
+  z-index: -1;
+  top: 6px;
+  left: 8px;
+  font-size: 15px;
+  color: rgb(0,0,0);
+}
+.button-wrap {
+  position: relative;
+  z-index: 1;
+}
+.files{ 
+    position:relative;
+    border: 2px solid #0142fe;
+    margin: 0;
+    width: 100% !important;
+    height:150px;
+    overflow:hidden;
+}
+
+.files input {
+    width: 100% !important;
+    height:200px;
+    border:none;
+    padding:0;
+    background:transparent;
+    text-align:center;
+}
+.files::after {
+    pointer-events: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 70px;
+    right: 0;
+    height: 70px;
+    content: "";
+    background-image: url(https://image.flaticon.com/icons/svg/130/130993.svg);
+    display: block;
+    margin: 0 auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.files::before {
+  content:"Browse or Drag file here";
+  position:absolute;
+  top:25px;;
+  left:0;
+  right:0;
+  display:block;
+  text-align:center;
+  color:#0142fe;
+  font-weight:bold;
+}
+    </style>
+  </head>
+
+  <body>
+   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+  <nav class="navbar navbar-dark bg-custom-1 navbar-expand-sm sticky-top" style="opacity:0.5,z-index:3">
+  <a class="navbar-brand" href="#">
+    <img src="{% static 'only-logo.png' %}"  height="40" alt="logo">
+    <img src="{% static 'title.png' %}"  height="40" alt="logo">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-2" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbar-list-2">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/uploadFiles/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/events/my-events">My-Events</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/events/view-events">View-Events</a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link" href="/events/registered-events">Registered-Events</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About Us</a>
+      </li>
+      
+    </ul>
+    
+    <ul class="navbar-nav" >
+    {% if request.session.user_name %}
+      <li class="nav-item" >
+      <!-- <a class="nav-link" href="#">{{request.session.user_name}}</a> -->
+      <a class="nav-link" href="/users/profile">{{request.session.user_name}}</a>
+      </li>
+      <li class="nav-item" >
+        <a class="nav-link" href="/users/logout">logout</a>
+      </li>
+    {% else %}
+      <li class="nav-item" >
+        <a class="nav-link" href="/users/login">login</a>
+      </li>
+      <li class="nav-item" >
+        <a class="nav-link" href="/users/signup">Sign Up</a>
+      </li>
+        <!-- <p>Welcome {{ user.username }}</p>        -->
+    {% endif %}
+    
+    </ul>
+  </div>
+</nav>
+{% block content %}
+
+{% endblock content %}
+
+<footer class="mainfooter" role="contentinfo">
+  <div class="footer-middle">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5">
+        <!--Column1-->
+        <div class="footer-pad">
+          <h4 style="font-family: 'Montserrat Subrayada', sans-serif;">Find Us!</h4>
+          <i class="fa fa-envelope "></i><span class="list-unstyled" style="padding:10px">picprocure@gmail.com</snap>
+          <br><br>
+          <i class="fa fa-phone "></i><span class="list-unstyled" style="padding:10px">+91 7043237722 , 9924282318 , 7016375925</span> 
+          
+        </div>
+      </div>
+      
+      <div class="col-md-5">
+        <!--Column1-->
+        <div class="footer-pad">
+          <h4 style="font-family: 'Montserrat Subrayada', sans-serif;">Feedback</h4>
+          <form class="row" action="/users/feedback" method = "post" style="margin-bottom:0px;padding-bottom:0px">  {% csrf_token %}
+                           <!-- <div class="col-md-3"></div> -->
+                            <div style="text-align: center;">
+                                <!-- <div class="form-group animate__animated animate__zoomIn"  >
+                                    <input type="email" class="form-control" placeholder="email *" value="" requried email name='email' style="border-radius:10px; border-color:#00c6ff"/>
+                                </div> -->
+                               
+                                <div class="form-group animate__animated animate__zoomIn">
+                                    <textarea class="form-control" placeholder="descrition *" value="" requried name="description" style="border-radius:10px; border-color:#00c6ff;overflow:auto"></textarea>
+                                      
+                                </div>
+                                <input type="submit" style="justify: center;" class="btnRegister"  value="Send!"/>
+                            </div>                      
+                        </form>
+        </div>
+      </div>
+    	<div class="col-md-2">
+    		<h4 style="font-family: 'Montserrat Subrayada', sans-serif;">Follow Us</h4>
+            <ul class="social-network social-circle">
+             <li><a href="#" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+             <li><a href="#" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+            </ul>				
+		</div>
+    </div>
+	<div class="row">
+		<div class="col-md-12 copy">
+			<p class="text-center">&copy; Copyright 2020 - Pic Procure.  All rights reserved.</p>
+		</div>
+	</div>
+
+
+  </div>
+  </div>
+</footer>
+</body>
